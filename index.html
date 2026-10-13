@@ -6,6 +6,7 @@
 <title>Color Palette Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0,0" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/styles.css">
+<link rel="stylesheet" href="components/mobile-home/home-screen.css">
 </head>
 <body>
 <main>
@@ -35,51 +36,12 @@
       <div class="left-exports"><h2>Export for your app</h2><div class="exports"><button class="btn" data-export="json">JSON</button><button class="btn" data-export="xml">Android XML</button><button class="btn" data-export="kotlin">Kotlin / Compose</button><button class="btn" data-export="ios">iOS Asset Catalog JSONs</button><button class="btn" data-export="swift">Swift colors</button></div><div class="note">Exports are generated locally in your browser. No seed colors are sent to a server.</div></div>
     </section>
     <section class="phone-wrap">
-      <div class="phone-heading"><div><h2 style="margin:0">Mobile UI preview</h2><p style="font-size:13px">Blueline Taxis · Mobile screen preview</p></div><div class="mode-toggle" role="group" aria-label="Preview theme"><button id="lightModeBtn" class="active" aria-pressed="true"><span class="material-symbols-rounded">light_mode</span> Light</button><button id="darkModeBtn" aria-pressed="false"><span class="material-symbols-rounded">dark_mode</span> Dark</button></div></div>
-      <div class="screen-selector-wrap" aria-label="Choose preview screen">
-        <span class="screen-selector-label">PREVIEW SCREEN</span>
-        <!-- Future screen buttons can be added here when a new preview is ready. -->
-          <div class="screen-toggle" role="group" aria-label="Mobile screen">
-          <button type="button" data-screen="home" class="active" aria-pressed="true"><span class="material-symbols-rounded">home</span> Home</button>
-          </div>
-      </div>
-      <div class="phone" id="phonePreview" data-mode="light" data-screen="home">
-        <div class="mock-map"><div class="map-grid"></div><div class="map-water"></div><div class="map-route"></div><div class="phone-status"><span>4:03 ◈</span><span>● ▰ ▴</span></div><div class="mock-menu"><span class="material-symbols-rounded">menu</span></div><div class="mock-top-pill"><span class="material-symbols-rounded">local_fire_department</span> 100</div><div class="map-pin"><small>3 MIN</small>Pickup</div></div>
-        <div class="mock-sheet"><div class="mock-search"><span class="material-symbols-rounded">search</span><span>Where to?</span><span class="schedule"><span class="material-symbols-rounded">calendar_month</span> Schedule</span></div><div class="mock-label">Quick Booking Stops</div><div class="quick-row"><div class="quick-item"><div class="quick-circle alt"><span class="material-symbols-rounded">flight</span></div>Airport</div><div class="quick-item"><div class="quick-circle"><span class="material-symbols-rounded">home</span></div>Home</div><div class="quick-item"><div class="quick-circle neutral"><span class="material-symbols-rounded">add</span></div>Add</div></div><div class="mock-label">Promotions</div><div class="promo-row"><div class="promo">CARLISLE TAXIS</div><div class="promo alt">GREY STREET HOTEL</div></div></div><div class="mock-profile">
-  <div class="back">‹</div><h2>Profile</h2><div class="sub">Manage your account and preferences</div>
-  <div class="person"><div class="avatar"><span class="material-symbols-rounded">person</span></div><span>John Stone</span></div>
-  <h3>Profile Details</h3><div class="info-card">
-    <div class="info-row"><span class="material-symbols-rounded">call</span><div>Contact number<div class="value">+44 7111 111111</div></div></div>
-    <div class="info-row"><span class="material-symbols-rounded">mail</span><div>Email<div class="value">onepluscab9.dev@gmail.com</div></div></div>
-  </div>
-  <h3>Saved Addresses <span class="pill">View All ›</span></h3><div class="info-card">
-    <div class="info-row"><span class="material-symbols-rounded">home</span><div>Home<div class="value">Blueline Taxis Newcastle</div></div></div>
-    <div class="info-row"><span class="material-symbols-rounded">work</span><div>Work<div class="value">Add work address</div></div></div>
-  </div><h3>About</h3><div class="info-card"><div class="info-row"><span class="material-symbols-rounded">verified_user</span><div class="value">Privacy Policy</div></div></div><div class="delete">Delete Account</div>
-</div>
-<div class="mock-drawer">
-  <div class="drawer-hero"><span class="material-symbols-rounded">route</span><strong style="font-size:24px">John Stone</strong><span>+44 7111 111111</span></div>
-  <div class="drawer-item selected"><span class="material-symbols-rounded">home</span>Home</div>
-  <div class="drawer-item"><span class="material-symbols-rounded">format_list_bulleted</span>Bookings</div>
-  <div class="drawer-item"><span class="material-symbols-rounded">person</span>Profile</div>
-  <div class="drawer-item"><span class="material-symbols-rounded">local_fire_department</span>Loyalty Points</div>
-  <div class="drawer-item"><span class="material-symbols-rounded">credit_card</span>Payments</div>
-  <div class="drawer-item"><span class="material-symbols-rounded">help</span>Support</div>
-  <div class="drawer-item"><span class="material-symbols-rounded">logout</span>Logout</div>
-  <div class="version">v800.6.0</div>
-</div>
-<div class="mock-splash">
-  <div class="statusbar"><span>4:03 ◈</span><span>● ▰ ▴</span></div>
-  <div class="brand">Blueline<small>Taxis</small></div>
-  <div class="welcome"><h2>Welcome</h2><p>Enjoy a smoother, faster experience by booking your ride with Blueline Taxis</p><button class="get-started">Get Started</button></div>
-</div>
-<div class="mock-nav"><span>◀</span><span>●</span><span>■</span></div>
-      </div>
+      <div data-component="mobile-home"></div>
     </section>
   </div>
   <div class="footer">Color Palette Studio · Cross-platform palette generator · Local MVP</div>
 </main>
 <div class="toast" id="toast" role="status"></div>
-<script type="module" src="assets/js/app.js"></script>
+<script type="module" src="assets/js/bootstrap.js"></script>
 </body>
 </html>

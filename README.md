@@ -8,7 +8,9 @@ A static, client-side palette generator hosted with GitHub Pages.
 - `assets/css/styles.css` — layout, responsive styling, mobile preview themes, and embedded reference-asset data URIs.
 - `assets/js/palette-engine.js` — pure color conversion and palette-generation rules. This is the primary place to tune shade-generation behavior.
 - `assets/js/palette-exporters.js` — JSON, Android XML/Kotlin, Swift, and iOS Asset Catalog serialization.
-- `assets/js/app.js` — UI state, DOM rendering, interactions, clipboard and download behavior.
+- `assets/js/app.js` — palette UI state, DOM rendering, interactions, clipboard and download behavior.
+- `assets/js/bootstrap.js` — loads the mobile Home component before initializing the app.
+- `components/mobile-home/` — all Home mobile preview markup and its dedicated stylesheet. Keep Home-only UI changes here; shared shell and palette styles stay under `assets/`.
 
 ## Local preview
 
@@ -36,3 +38,8 @@ Profile and Drawer markup/styles/assets are retained in the project but their se
 ## Palette algorithm
 
 Algorithm constants and edge-case rules are documented near the top of `palette-engine.js`. Keep the generator pure: it should return palette data and should not update the DOM.
+
+
+## Home mobile UI component
+
+The Blueline Taxis Home preview is separated into `components/mobile-home/home-screen.html` and `components/mobile-home/home-screen.css`. `assets/js/bootstrap.js` injects the markup before `app.js` binds its controls. This works on GitHub Pages and local HTTP servers; do not open `index.html` directly with `file://` because the component is fetched as a separate file. The map image remains embedded in the shared stylesheet for now to preserve the exact supplied map asset.

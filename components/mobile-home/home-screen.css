@@ -1,0 +1,28 @@
+/* Blueline Taxis Home mobile preview component.
+   Shared phone primitives and theme tokens remain in assets/css/styles.css.
+   Keep Home-only overrides and layout adjustments in this file. */
+.home-mobile-component {
+  --home-screen-width: 440px;
+}
+
+.home-mobile-component .phone {
+  max-width: var(--home-screen-width);
+}
+
+.home-mobile-component .mock-map,
+.home-mobile-component .mock-sheet {
+  display: block;
+}
+
+.home-mobile-component .mock-profile,
+.home-mobile-component .mock-drawer,
+.home-mobile-component .mock-splash {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  .home-mobile-component .phone {
+    max-width: 390px;
+    margin-inline: auto;
+  }
+}
