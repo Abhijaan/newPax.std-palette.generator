@@ -4,14 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Color Palette Studio</title>
-<style>
-:root{color-scheme:dark;--bg:#111318;--panel:#1b1e25;--panel2:#232731;--border:#343946;--text:#f3f4f6;--muted:#a5adbb;--accent:#a99af7;--accentText:#171326;--danger:#ff8f8f}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-main{max-width:1120px;margin:0 auto;padding:32px 20px 60px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:28px}.brand{display:flex;align-items:center;gap:12px}.logo{width:44px;height:44px;border-radius:13px;background:var(--accent);color:var(--accentText);display:grid;place-items:center;font-size:22px}.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}h1{font-size:clamp(25px,4vw,34px);letter-spacing:-.04em;margin:1px 0 0}h2{font-size:17px;margin:0 0 14px}p{color:var(--muted);margin:6px 0}.pill{border:1px solid var(--border);border-radius:999px;padding:7px 11px;color:var(--muted);font-size:12px;white-space:nowrap}
-.grid{display:grid;grid-template-columns:330px minmax(0,1fr);gap:18px}.panel{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:20px;min-width:0}.fieldlabel{display:block;color:var(--muted);font-size:13px;margin:18px 0 8px}.seedrow{display:flex;gap:10px}.seedrow input[type=color]{width:52px;height:48px;padding:4px;background:var(--panel2);border:1px solid var(--border);border-radius:10px;cursor:pointer}.seedrow input[type=text]{min-width:0;flex:1;background:var(--panel2);border:1px solid var(--border);border-radius:10px;color:var(--text);padding:0 13px;font:600 15px ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase}.seedrow input:focus{outline:2px solid var(--accent);outline-offset:1px}.help{font-size:12px;color:var(--muted);margin-top:8px}.btn{border:1px solid var(--border);background:var(--panel2);color:var(--text);border-radius:10px;padding:10px 13px;font-weight:600;cursor:pointer;transition:transform .12s,border-color .12s}.btn:hover{border-color:var(--accent)}.btn:active{transform:translateY(1px)}.btn.primary{background:var(--accent);color:var(--accentText);border-color:transparent}.btnrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.status{margin-top:14px;border-radius:10px;padding:10px 12px;background:#292d37;font-size:12px;color:var(--muted)}.status strong{color:var(--text)}.sectionhead{display:flex;justify-content:space-between;align-items:start;gap:12px;margin-bottom:14px}.sectionhead p{font-size:13px}.palette{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.swatch{border:1px solid #ffffff12;border-radius:12px;overflow:hidden;min-width:0;background:var(--panel2)}.swatchcolor{height:95px;cursor:pointer;position:relative}.swatchcolor:hover:after{content:"Copy";position:absolute;inset:auto 7px 7px;background:#0009;color:white;border-radius:6px;padding:3px 7px;font-size:11px;text-align:center}.swatchmeta{padding:10px 9px}.swatchname{font-size:12px;font-weight:700;overflow-wrap:anywhere}.swatchhex{font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted);margin-top:3px}.swatchhsb{font:10px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted);margin-top:4px;line-height:1.4}.seedtag{font-size:10px;color:var(--accent);margin-top:4px}.previewrow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.preview{border-radius:12px;padding:16px;min-height:130px}.preview small{display:block;opacity:.72;margin-bottom:12px}.preview strong{font-size:17px}.preview button{display:block;border:0;border-radius:7px;padding:8px 11px;margin-top:13px;font-weight:700}.exports{display:flex;flex-wrap:wrap;gap:8px}.note{font-size:12px;color:var(--muted);margin-top:13px}.warning{color:#ffd49a}.footer{margin-top:18px;text-align:center;color:#717987;font-size:12px}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#f5f5f5;color:#161616;padding:10px 15px;border-radius:10px;box-shadow:0 10px 35px #0007;opacity:0;pointer-events:none;transition:opacity .18s}.toast.show{opacity:1}
-@media(max-width:800px){.grid{grid-template-columns:1fr}.palette{grid-template-columns:repeat(2,minmax(0,1fr))}.swatchcolor{height:75px}.top{align-items:flex-start}.previewrow{grid-template-columns:1fr 1fr}}
-@media(min-width:801px) and (max-width:1050px){.palette{grid-template-columns:repeat(5,minmax(0,1fr))}.swatchcolor{height:75px}}
-</style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0,0" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
 <main>
@@ -24,225 +18,68 @@ main{max-width:1120px;margin:0 auto;padding:32px 20px 60px}.top{display:flex;jus
       <h2>Generate a palette</h2>
       <p>Enter a seed color. The seed becomes BrandPrimary600.</p>
       <label class="fieldlabel" for="seedHex">Seed color · HEX</label>
-      <div class="seedrow">
-        <input id="seedPicker" type="color" value="#6750A4" aria-label="Choose seed color">
-        <input id="seedHex" type="text" value="#6750A4" spellcheck="false" autocomplete="off" aria-label="Seed hex value">
-      </div>
+      <div class="seedrow"><input id="seedPicker" type="color" value="#20294F" aria-label="Choose seed color"><input id="seedHex" type="text" value="#20294F" spellcheck="false" autocomplete="off" aria-label="Seed hex value"></div>
       <div class="help">Accepts six-digit RGB hex, with or without #.</div>
-      <div class="btnrow">
-        <button class="btn primary" id="generateBtn">Generate palette</button>
-        <button class="btn" id="resetBtn">Reset</button>
-      </div>
+      <div class="btnrow"><button class="btn primary" id="generateBtn">Generate palette</button><button class="btn" id="resetBtn">Reset</button><button class="btn" id="copyAllBtn">Copy all</button></div>
       <div class="status" id="status" aria-live="polite"></div>
       <label class="fieldlabel" for="threshold">Low-saturation fallback threshold</label>
-      <select id="threshold" style="width:100%;padding:11px;background:var(--panel2);color:var(--text);border:1px solid var(--border);border-radius:10px">
-        <option value="15">Below 15%</option>
-        <option value="20" selected>Below 20% (provisional)</option>
-      </select>
-      <div class="help">A seed below this saturation, or below 10% brightness, uses the exact default palette.</div>
-      <div class="note warning">Thresholds and the high-brightness rule are provisional and can be refined as your specification evolves.</div>
-    </section>
-    <section class="panel">
-      <div class="sectionhead"><div><h2>Generated shades</h2><p>Click any swatch to copy its hex value.</p></div><button class="btn" id="copyAllBtn">Copy all</button></div>
+      <select id="threshold" style="width:100%;padding:11px;background:var(--panel2);color:var(--text);border:1px solid var(--border);border-radius:10px"><option value="15">Below 15%</option><option value="20" selected>Below 20%</option></select>
+      <div class="help">Seeds below the configured low-brightness threshold use the exact default palette.</div>
+      <div class="subhead">Color on primary</div><p>Text and icons placed directly on the seed-colored button.</p>
+      <div class="fieldgrid">
+        <div><label class="fieldlabel" for="onPrimaryLightHex">Light theme</label><div class="coloron-row"><input id="onPrimaryLightPicker" type="color" value="#FFFFFF" aria-label="Light color on primary"><input id="onPrimaryLightHex" type="text" value="#FFFFFF" aria-label="Light color on primary hex"></div></div>
+        <div><label class="fieldlabel" for="onPrimaryDarkHex">Dark theme</label><div class="coloron-row"><input id="onPrimaryDarkPicker" type="color" value="#FFFFFF" aria-label="Dark color on primary"><input id="onPrimaryDarkHex" type="text" value="#FFFFFF" aria-label="Dark color on primary hex"></div></div>
+      </div>
+      <div class="palette-title"><h2>Generated shades</h2><span class="help">Tap a row to copy HEX</span></div>
       <div class="palette" id="palette"></div>
-      <div class="previewrow" id="previews"></div>
-      <div style="margin-top:22px"><h2>Export for your app</h2><div class="exports">
-        <button class="btn" data-export="json">JSON</button>
-        <button class="btn" data-export="xml">Android XML</button>
-        <button class="btn" data-export="kotlin">Kotlin / Compose</button>
-        <button class="btn" data-export="ios">iOS Asset Catalog JSONs</button>
-        <button class="btn" data-export="swift">Swift colors</button>
-      </div><div class="note">Exports are generated locally in your browser. No seed colors are sent to a server.</div></div>
+      <div class="left-exports"><h2>Export for your app</h2><div class="exports"><button class="btn" data-export="json">JSON</button><button class="btn" data-export="xml">Android XML</button><button class="btn" data-export="kotlin">Kotlin / Compose</button><button class="btn" data-export="ios">iOS Asset Catalog JSONs</button><button class="btn" data-export="swift">Swift colors</button></div><div class="note">Exports are generated locally in your browser. No seed colors are sent to a server.</div></div>
+    </section>
+    <section class="phone-wrap">
+      <div class="phone-heading"><div><h2 style="margin:0">Mobile UI preview</h2><p style="font-size:13px">Blueline Taxis · Mobile screen preview</p></div><div class="mode-toggle" role="group" aria-label="Preview theme"><button id="lightModeBtn" class="active" aria-pressed="true"><span class="material-symbols-rounded">light_mode</span> Light</button><button id="darkModeBtn" aria-pressed="false"><span class="material-symbols-rounded">dark_mode</span> Dark</button></div></div>
+      <div class="screen-selector-wrap" aria-label="Choose preview screen">
+        <span class="screen-selector-label">PREVIEW SCREEN</span>
+        <!-- Future screen buttons can be added here when a new preview is ready. -->
+          <div class="screen-toggle" role="group" aria-label="Mobile screen">
+          <button type="button" data-screen="home" class="active" aria-pressed="true"><span class="material-symbols-rounded">home</span> Home</button>
+          </div>
+      </div>
+      <div class="phone" id="phonePreview" data-mode="light" data-screen="home">
+        <div class="mock-map"><div class="map-grid"></div><div class="map-water"></div><div class="map-route"></div><div class="phone-status"><span>4:03 ◈</span><span>● ▰ ▴</span></div><div class="mock-menu"><span class="material-symbols-rounded">menu</span></div><div class="mock-top-pill"><span class="material-symbols-rounded">local_fire_department</span> 100</div><div class="map-pin"><small>3 MIN</small>Pickup</div></div>
+        <div class="mock-sheet"><div class="mock-search"><span class="material-symbols-rounded">search</span><span>Where to?</span><span class="schedule"><span class="material-symbols-rounded">calendar_month</span> Schedule</span></div><div class="mock-label">Quick Booking Stops</div><div class="quick-row"><div class="quick-item"><div class="quick-circle alt"><span class="material-symbols-rounded">flight</span></div>Airport</div><div class="quick-item"><div class="quick-circle"><span class="material-symbols-rounded">home</span></div>Home</div><div class="quick-item"><div class="quick-circle neutral"><span class="material-symbols-rounded">add</span></div>Add</div></div><div class="mock-label">Promotions</div><div class="promo-row"><div class="promo">CARLISLE TAXIS</div><div class="promo alt">GREY STREET HOTEL</div></div></div><div class="mock-profile">
+  <div class="back">‹</div><h2>Profile</h2><div class="sub">Manage your account and preferences</div>
+  <div class="person"><div class="avatar"><span class="material-symbols-rounded">person</span></div><span>John Stone</span></div>
+  <h3>Profile Details</h3><div class="info-card">
+    <div class="info-row"><span class="material-symbols-rounded">call</span><div>Contact number<div class="value">+44 7111 111111</div></div></div>
+    <div class="info-row"><span class="material-symbols-rounded">mail</span><div>Email<div class="value">onepluscab9.dev@gmail.com</div></div></div>
+  </div>
+  <h3>Saved Addresses <span class="pill">View All ›</span></h3><div class="info-card">
+    <div class="info-row"><span class="material-symbols-rounded">home</span><div>Home<div class="value">Blueline Taxis Newcastle</div></div></div>
+    <div class="info-row"><span class="material-symbols-rounded">work</span><div>Work<div class="value">Add work address</div></div></div>
+  </div><h3>About</h3><div class="info-card"><div class="info-row"><span class="material-symbols-rounded">verified_user</span><div class="value">Privacy Policy</div></div></div><div class="delete">Delete Account</div>
+</div>
+<div class="mock-drawer">
+  <div class="drawer-hero"><span class="material-symbols-rounded">route</span><strong style="font-size:24px">John Stone</strong><span>+44 7111 111111</span></div>
+  <div class="drawer-item selected"><span class="material-symbols-rounded">home</span>Home</div>
+  <div class="drawer-item"><span class="material-symbols-rounded">format_list_bulleted</span>Bookings</div>
+  <div class="drawer-item"><span class="material-symbols-rounded">person</span>Profile</div>
+  <div class="drawer-item"><span class="material-symbols-rounded">local_fire_department</span>Loyalty Points</div>
+  <div class="drawer-item"><span class="material-symbols-rounded">credit_card</span>Payments</div>
+  <div class="drawer-item"><span class="material-symbols-rounded">help</span>Support</div>
+  <div class="drawer-item"><span class="material-symbols-rounded">logout</span>Logout</div>
+  <div class="version">v800.6.0</div>
+</div>
+<div class="mock-splash">
+  <div class="statusbar"><span>4:03 ◈</span><span>● ▰ ▴</span></div>
+  <div class="brand">Blueline<small>Taxis</small></div>
+  <div class="welcome"><h2>Welcome</h2><p>Enjoy a smoother, faster experience by booking your ride with Blueline Taxis</p><button class="get-started">Get Started</button></div>
+</div>
+<div class="mock-nav"><span>◀</span><span>●</span><span>■</span></div>
+      </div>
     </section>
   </div>
   <div class="footer">Color Palette Studio · Cross-platform palette generator · Local MVP</div>
 </main>
 <div class="toast" id="toast" role="status"></div>
-<script>
-const DEFAULT_PALETTE = [
-  ["BrandPrimary100","#F5F5F5"],["BrandPrimary200","#E6E6E6"],["BrandPrimary300","#D6D6D6"],
-  ["BrandPrimary400","#A5A5A5"],["BrandPrimary500","#767676"],["BrandPrimary600","#575757"],
-  ["BrandPrimary700","#434343"],["BrandPrimary800","#292929"],["BrandPrimary900","#1A1A1A"],
-  ["BrandPrimary1000","#000000"]
-];
-const SHADES = [100,200,300,400,500,600,700,800,900,1000];
-const $ = id => document.getElementById(id);
-let current = null;
-let toastTimer;
-function toast(message){const el=$("toast");el.textContent=message;el.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove("show"),1700)}
-function normalizeHex(value){let s=value.trim();if(!s.startsWith("#"))s="#"+s;if(!/^#[0-9a-fA-F]{6}$/.test(s))throw new Error("Enter a valid six-digit hex color, such as #6750A4.");return s.toUpperCase()}
-/*
- * COLOR PALETTE STUDIO — ALGORITHM NOTES
- * --------------------------------------
- * Shade scale: BrandPrimary100 ... BrandPrimary1000; seed is always shade 600.
- *
- * Customization guide:
- * - DEFAULT_PALETTE: exact colors used for the low-brightness fallback.
- * - LOW_BRIGHTNESS_FALLBACK_THRESHOLD: seed brightness below this value uses
- *   the full default palette. Currently 20% (previous threshold 10% + 10 points).
- * - LIGHT_BRIGHTNESS_BY_SHADE / SATURATION_FACTOR_BY_SHADE: lighter-side curve.
- * - DARK_REDUCTION_MIN / DARK_REDUCTION_MAX and ramp start/end: darker curve.
- *
- * HSB/HSV brightness is the maximum RGB channel as a percentage. Final hex colors
- * use 8-bit RGB, so measured HSB can differ slightly from targets due to rounding.
- */
-const LOW_BRIGHTNESS_FALLBACK_THRESHOLD = 20;
-const DARK_REDUCTION_MIN = 40;
-const DARK_REDUCTION_MAX = 45;
-const DARK_REDUCTION_RAMP_START = 60;
-const DARK_REDUCTION_RAMP_END = 65;
-
-function hexToRgb(hex){const s=hex.replace("#","");return {r:parseInt(s.slice(0,2),16),g:parseInt(s.slice(2,4),16),b:parseInt(s.slice(4,6),16)}}
-function rgbToHsb(hex){
- const {r:rr,g:gg,b:bb}=hexToRgb(hex);const r=rr/255,g=gg/255,b=bb/255;
- const max=Math.max(r,g,b),min=Math.min(r,g,b),d=max-min;let h=0;
- if(d!==0){if(max===r)h=60*(((g-b)/d)%6);else if(max===g)h=60*((b-r)/d+2);else h=60*((r-g)/d+4)}
- if(h<0)h+=360;
- return {h,s:max===0?0:d/max*100,b:max*100};
-}
-function hsbToHex(h,s,v){
- s=Math.max(0,Math.min(100,s))/100;v=Math.max(0,Math.min(100,v))/100;
- const c=v*s,x=c*(1-Math.abs(((h/60)%2)-1)),m=v-c;let r=0,g=0,b=0;
- if(h<60){r=c;g=x}else if(h<120){r=x;g=c}else if(h<180){g=c;b=x}else if(h<240){g=x;b=c}else if(h<300){r=x;b=c}else{r=c;b=x}
- const byte=n=>Math.round((n+m)*255).toString(16).padStart(2,"0");
- return "#"+(byte(r)+byte(g)+byte(b)).toUpperCase();
-}
-function generate(seed, threshold){
- const hsb=rgbToHsb(seed);
- const lowS=hsb.s < threshold;
- const lowB=hsb.b < LOW_BRIGHTNESS_FALLBACK_THRESHOLD;
-
- // Low-brightness edge case: use the entire approved default palette exactly.
- // The threshold is 20%, increased from 10% by 10 percentage points.
- // This applies regardless of saturation: a very dark seed leaves too little
- // useful range for generating the darker shades.
- if(lowB){
-   return {colors:DEFAULT_PALETTE.map(([name,hex])=>({name,hex})),mode:"fallback",hsb,reason:`Seed brightness ${hsb.b.toFixed(1)}% is below ${LOW_BRIGHTNESS_FALLBACK_THRESHOLD}%. Exact default palette used.`};
- }
-
- const map={};
- map[600]=seed;
-
- // Lighter-side rules calibrated against both supplied reference palettes.
- // For darker seeds, shade 500 starts around 82% brightness; for already-bright
- // seeds, preserve their high brightness and ramp toward near-white.
- // Saturation tapers progressively toward shade 100, based on the reference profile.
- const highBrightness=hsb.b>72;
- const lightBrightnessByShade={500:82,400:87,300:92,200:96,100:99.6};
- const saturationFactorByShade={500:1.09,400:0.70,300:0.44,200:0.22,100:0.092};
-
- for(const shade of [500,400,300,200,100]){
-   let bright=lightBrightnessByShade[shade];
-   if(highBrightness){
-     // Preserve the seed's high brightness while moving toward near-white.
-     const highSeedRamp={500:hsb.b,400:hsb.b+(99.6-hsb.b)*0.25,300:hsb.b+(99.6-hsb.b)*0.5,200:hsb.b+(99.6-hsb.b)*0.75,100:99.6};
-     bright=highSeedRamp[shade];
-   }
-   // Keep the seed hue. Shade 500 saturation is capped at the reference's
-   // upper light-shade range; subsequent shades decrease progressively.
-   const shade500Sat=Math.min(hsb.s*1.09,71);
-   const satFactors={500:1,400:0.70,300:0.44,200:0.22,100:0.092};
-   let sat=Math.min(100,shade500Sat*satFactors[shade]);
-
-   if(lowS){
-     // Low saturation only: preserve saturation and vary brightness only.
-     sat=hsb.s;
-   }else if(lowB){
-     // Low brightness only: preserve brightness and adjust saturation only.
-     bright=hsb.b;
-   }
-   map[shade]=hsbToHex(hsb.h,sat,bright);
- }
- // Darker shades: preserve hue and saturation, with four equal brightness steps.
- // Shade 1000 target is seed brightness minus a reduction:
- //   B <= 60%: subtract 40 points (55% -> 15%).
- //   B >= 65%: subtract 45 points (65% -> 20%).
- //   Between 60% and 65%, smoothly interpolate the reduction from 40 to 45.
- // The same total reduction is divided into four equal steps from 600 to 1000.
- const rampProgress=Math.max(0,Math.min(1,
-   (hsb.b-DARK_REDUCTION_RAMP_START)/(DARK_REDUCTION_RAMP_END-DARK_REDUCTION_RAMP_START)
- ));
- const darkReduction=DARK_REDUCTION_MIN+
-   (DARK_REDUCTION_MAX-DARK_REDUCTION_MIN)*rampProgress;
- const darkTarget=Math.max(0,hsb.b-darkReduction);
- const darkStep=(hsb.b-darkTarget)/4;
- for(const [index,shade] of [700,800,900,1000].entries()){
-   const bright=hsb.b-darkStep*(index+1);
-   map[shade]=hsbToHex(hsb.h,hsb.s,bright);
- }
-
- const reason=lowS
-   ? `Low saturation (${hsb.s.toFixed(1)}%): lighter shades adjust brightness only.`
-   : lowB
-     ? `Low brightness (${hsb.b.toFixed(1)}%): lighter shades adjust saturation only.`
-     : highBrightness
-       ? "Lighter shades use the reference-calibrated curve; darker shades use four equal steps and a 40–45 point reduction."
-       : "Lighter shades use the reference-calibrated curve; darker shades use four equal steps and a 40–45 point reduction.";
- return {colors:SHADES.map(n=>({name:"BrandPrimary"+n,hex:map[n]})),mode:"generated",hsb,reason};
-}
-function readableText(hex){const {r,g,b}=hexToRgb(hex);const linear=[r,g,b].map(x=>{x/=255;return x<=.04045?x/12.92:Math.pow((x+.055)/1.055,2.4)});const lum=.2126*linear[0]+.7152*linear[1]+.0722*linear[2];return lum>.42?"#161616":"#FFFFFF"}
-function render(){
- if(!current)return;
- $("palette").innerHTML="";
- current.colors.forEach(({name,hex})=>{
-  const shade=name.replace("BrandPrimary","");
-  const card=document.createElement("div");card.className="swatch";
-  const color=document.createElement("div");color.className="swatchcolor";color.style.background=hex;color.title="Copy "+hex;color.tabIndex=0;color.setAttribute("role","button");color.setAttribute("aria-label",`Copy ${name} ${hex}`);
-  color.addEventListener("click",()=>copy(hex));color.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();copy(hex)}});
-  const meta=document.createElement("div");meta.className="swatchmeta";
-  const nm=document.createElement("div");nm.className="swatchname";nm.textContent=name;
-  const hx=document.createElement("div");hx.className="swatchhex";hx.textContent=hex;
-  const values=rgbToHsb(hex);
-  const hsbLine=document.createElement("div");hsbLine.className="swatchhsb";
-  hsbLine.textContent=`H ${values.h.toFixed(1)}° · S ${values.s.toFixed(1)}% · B ${values.b.toFixed(1)}%`;
-  meta.append(nm,hx,hsbLine);if(shade==="600"){const tag=document.createElement("div");tag.className="seedtag";tag.textContent=current.mode==="fallback"?"Default 600":"SEED";meta.append(tag)}
-  card.append(color,meta);$("palette").append(card);
- });
- $("previews").innerHTML="";
- const primary=current.colors.find(c=>c.name==="BrandPrimary600").hex;
- const light=current.colors.find(c=>c.name==="BrandPrimary100").hex;
- const dark=current.colors.find(c=>c.name==="BrandPrimary900").hex;
- $("previews").innerHTML=`<div class="preview" style="background:${light};color:${readableText(light)}"><small>Light surface · BrandPrimary100</small><strong>Example app card</strong><button style="background:${primary};color:${readableText(primary)}">Primary action</button></div><div class="preview" style="background:${dark};color:${readableText(dark)}"><small>Dark surface · BrandPrimary900</small><strong>Example app card</strong><button style="background:${primary};color:${readableText(primary)}">Primary action</button></div>`;
- const h=current.hsb;
- $("status").innerHTML=`<strong>${current.mode==="fallback"?"Default palette selected":"Custom palette generated"}</strong><br>HSB: H ${h.h.toFixed(1)}° · S ${h.s.toFixed(1)}% · B ${h.b.toFixed(1)}%<br>${current.reason}`;
-}
-function generateFromInput(){
- try{
-  const hex=normalizeHex($("seedHex").value);$("seedHex").value=hex;$("seedPicker").value=hex;
-  current=generate(hex,Number($("threshold").value));render();
- }catch(e){$("seedHex").setAttribute("aria-invalid","true");toast(e.message)}
-}
-async function copy(text){try{await navigator.clipboard.writeText(text);toast("Copied "+text)}catch{const ta=document.createElement("textarea");ta.value=text;document.body.append(ta);ta.select();document.execCommand("copy");ta.remove();toast("Copied "+text)}}
-function download(filename,content,type="text/plain;charset=utf-8"){const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
-function paletteObject(){return {schemaVersion:"1.0.0",algorithmVersion:"0.1.0",mode:current.mode,seed:$("seedHex").value,hsb:{h:Number(current.hsb.h.toFixed(4)),s:Number(current.hsb.s.toFixed(4)),b:Number(current.hsb.b.toFixed(4))},fallbackReason:current.mode==="fallback"?current.reason:null,colors:Object.fromEntries(current.colors.map(c=>[c.name,c.hex]))}}
-function xmlExport(){return `<?xml version="1.0" encoding="utf-8"?>\n<resources>\n${current.colors.map(c=>`    <color name="${c.name.toLowerCase()}">${c.hex}</color>`).join("\n")}\n</resources>\n`}
-function kotlinExport(){return `package com.example.designsystem.colors\n\nimport androidx.compose.ui.graphics.Color\n\n// Generated by Color Palette Studio. Review before committing.\nobject BrandPrimary {\n${current.colors.map(c=>`    val ${c.name.replace("BrandPrimary","")} = Color(0xFF${c.hex.slice(1)})`).join("\n")}\n}\n`}
-function swiftExport(){return `import SwiftUI\nimport UIKit\n\n// Generated by Color Palette Studio. Review before committing.\nenum BrandPrimary {\n${current.colors.map(c=>`    static let ${c.name.replace("BrandPrimary","")} = Color(red: ${ (hexToRgb(c.hex).r/255).toFixed(6)}, green: ${(hexToRgb(c.hex).g/255).toFixed(6)}, blue: ${(hexToRgb(c.hex).b/255).toFixed(6)})`).join("\n")}\n}\n`}
-function assetContents(hex){const {r,g,b}=hexToRgb(hex);const rgba=n=>(n/255).toFixed(6);return JSON.stringify({colors:[{color:{colorSpace:"srgb",components:{alpha:"1.000",red:rgba(r),green:rgba(g),blue:rgba(b)}}}],info:{author:"xcode",version:1}},null,2)+"\n"}
-function downloadIosAssets(){
- // Emit each Xcode colorset JSON individually; browser download is one file at a time.
- // ZIP support is intentionally deferred rather than shipping a hidden dependency.
- const data=current.colors.map(c=>({name:c.name,contents:assetContents(c.hex)}));
- data.forEach((c,i)=>setTimeout(()=>download(`${c.name}.colorset-Contents.json`,c.contents,"application/json"),i*120));
- toast("Downloading 10 Asset Catalog JSON files. Place each JSON in its matching .colorset folder.");
-}
-document.querySelectorAll("[data-export]").forEach(btn=>btn.addEventListener("click",()=>{
- if(!current)generateFromInput();
- const kind=btn.dataset.export;
- if(kind==="json")download("brand-primary-palette.json",JSON.stringify(paletteObject(),null,2)+"\n","application/json");
- if(kind==="xml")download("colors.xml",xmlExport(),"application/xml");
- if(kind==="kotlin")download("BrandPrimary.kt",kotlinExport(),"text/plain");
- if(kind==="swift")download("BrandPrimary.swift",swiftExport(),"text/plain");
- if(kind==="ios")downloadIosAssets();
-}));
-$("generateBtn").addEventListener("click",generateFromInput);
-$("seedPicker").addEventListener("input",e=>{$("seedHex").value=e.target.value.toUpperCase();generateFromInput()});
-$("seedHex").addEventListener("keydown",e=>{if(e.key==="Enter")generateFromInput()});
-$("seedHex").addEventListener("input",()=>{$("seedHex").removeAttribute("aria-invalid")});
-$("threshold").addEventListener("change",generateFromInput);
-$("resetBtn").addEventListener("click",()=>{$("seedHex").value="#6750A4";$("seedPicker").value="#6750A4";$("threshold").value="20";generateFromInput()});
-$("copyAllBtn").addEventListener("click",()=>copy(current.colors.map(c=>`${c.name}: ${c.hex}`).join("\n")));
-generateFromInput();
-</script>
+<script type="module" src="assets/js/app.js"></script>
 </body>
 </html>
