@@ -1,6 +1,6 @@
 /* Color Palette Studio styles and embedded design-reference assets. */
 
-:root{color-scheme:dark;--bg:#111318;--panel:#1b1e25;--panel2:#232731;--border:#343946;--text:#f3f4f6;--muted:#a5adbb;--accent:#a99af7;--accentText:#171326;--danger:#ff8f8f}
+:root{color-scheme:light;--bg:#FDE6E6;--panel:#FFFFFF;--panel2:#FFF5F5;--border:#FAC2C2;--text:#690000;--muted:#850000;--accent:#E90000;--accentText:#FFFFFF;--danger:#A50000;--web-red-1000:#690000;--web-red-900:#850000;--web-red-800:#A50000;--web-red-700:#C60000;--web-red-600:#E90000;--web-red-500:#ED2E2E;--web-red-400:#F69191;--web-red-300:#F69191;--web-red-200:#FAC2C2;--web-red-100:#FDE6E6}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 main{max-width:1440px;margin:0 auto;padding:28px 20px 60px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:28px}.brand{display:flex;align-items:center;gap:12px}.logo{width:44px;height:44px;border-radius:13px;background:var(--accent);color:var(--accentText);display:grid;place-items:center;font-size:22px}.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}h1{font-size:clamp(25px,4vw,34px);letter-spacing:-.04em;margin:1px 0 0}h2{font-size:17px;margin:0 0 14px}p{color:var(--muted);margin:6px 0}.pill{border:1px solid var(--border);border-radius:999px;padding:7px 11px;color:var(--muted);font-size:12px;white-space:nowrap}
 .grid{display:grid;grid-template-columns:minmax(390px,0.92fr) minmax(380px,1.08fr);gap:18px;align-items:start}.panel{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:20px;min-width:0}.fieldlabel{display:block;color:var(--muted);font-size:13px;margin:18px 0 8px}.seedrow{display:flex;gap:10px}.seedrow input[type=color]{width:52px;height:48px;padding:4px;background:var(--panel2);border:1px solid var(--border);border-radius:10px;cursor:pointer}.seedrow input[type=text]{min-width:0;flex:1;background:var(--panel2);border:1px solid var(--border);border-radius:10px;color:var(--text);padding:0 13px;font:600 15px ui-monospace,SFMono-Regular,Menlo,monospace;text-transform:uppercase}.seedrow input:focus{outline:2px solid var(--accent);outline-offset:1px}.help{font-size:12px;color:var(--muted);margin-top:8px}.btn{border:1px solid var(--border);background:var(--panel2);color:var(--text);border-radius:10px;padding:10px 13px;font-weight:600;cursor:pointer;transition:transform .12s,border-color .12s}.btn:hover{border-color:var(--accent)}.btn:active{transform:translateY(1px)}.btn.primary{background:var(--accent);color:var(--accentText);border-color:transparent}.btnrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.status{margin-top:14px;border-radius:10px;padding:10px 12px;background:#292d37;font-size:12px;color:var(--muted)}.status strong{color:var(--text)}.sectionhead{display:flex;justify-content:space-between;align-items:start;gap:12px;margin-bottom:14px}.sectionhead p{font-size:13px}.palette{display:grid;grid-template-columns:1fr;gap:8px}.swatch{border:1px solid #ffffff12;border-radius:999px;overflow:hidden;min-width:0;background:var(--panel2);display:flex;align-items:center;gap:12px;padding:8px}.swatchcolor{height:48px;width:48px;min-width:48px;border-radius:50%;cursor:pointer;position:relative}.swatchcolor:hover:after{content:"Copy";position:absolute;inset:auto 7px 7px;background:#0009;color:white;border-radius:6px;padding:3px 7px;font-size:11px;text-align:center}.swatchmeta{padding:0;min-width:0;flex:1}.swatchname{font-size:12px;font-weight:700;overflow-wrap:anywhere}.swatchhex{font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted);margin-top:3px}.swatchhsb{font:10px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted);margin-top:4px;line-height:1.4}.seedtag{font-size:10px;color:var(--accent);margin-top:4px}.previewrow{display:none}.preview{border-radius:12px;padding:16px;min-height:130px}.preview small{display:block;opacity:.72;margin-bottom:12px}.preview strong{font-size:17px}.preview button{display:block;border:0;border-radius:7px;padding:8px 11px;margin-top:13px;font-weight:700}.exports{display:flex;flex-wrap:wrap;gap:8px}.note{font-size:12px;color:var(--muted);margin-top:13px}.warning{color:#ffd49a}.footer{margin-top:18px;text-align:center;color:#717987;font-size:12px}.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#f5f5f5;color:#161616;padding:10px 15px;border-radius:10px;box-shadow:0 10px 35px #0007;opacity:0;pointer-events:none;transition:opacity .18s}.toast.show{opacity:1}
@@ -105,3 +105,80 @@ main{max-width:1440px;margin:0 auto;padding:28px 20px 60px}.top{display:flex;jus
   background-repeat:no-repeat;background-position:center top;background-size:100% auto;
 }
 
+
+
+
+
+/* FINAL WEBSITE-ONLY ELECTRIC RED THEME OVERRIDES. Keep mobile mockup colors independent. */
+:root{--bg:#FDE6E6!important;--panel:#FFFFFF!important;--panel2:#FFF5F5!important;--border:#FAC2C2!important;--text:#690000!important;--muted:#850000!important;--accent:#E90000!important;--accentText:#FFFFFF!important;--danger:#A50000!important}
+body{background:#FDE6E6!important;color:#690000!important}
+.panel,.mode-toggle,.app-tabs,.asset-controls,.asset-preview-panel{border-color:#FAC2C2!important}
+.panel,.mode-toggle,.asset-controls,.asset-preview-panel{background-color:#FFFFFF!important}
+.app-tabs .app-tab.active,.screen-toggle button.active,.mode-toggle button.active{background:#E90000!important;color:#FFFFFF!important;border-color:#E90000!important}
+.btn.primary,.logo{background:#E90000!important;color:#FFFFFF!important;border-color:#E90000!important}
+.btn:hover,.seedrow input:focus,.asset-select:focus,.asset-code-input:focus{border-color:#C60000!important}
+.seedrow input:focus{outline-color:#C60000!important}
+.status{background:#FDE6E6!important;color:#850000!important;border:1px solid #FAC2C2}
+.status strong{color:#690000!important}
+.footer,.eyebrow,p,.help,.fieldlabel,.pill,.note,.asset-intro p,.asset-section-heading p{color:#850000}
+.pill,.btn,.asset-select,.asset-number,.asset-code-input,.asset-dropzone{border-color:#FAC2C2}
+.btn{background:#FFF5F5;color:#690000}
+.btn.primary{background:#E90000;color:#FFFFFF}
+.asset-platform-tab.active{background:#E90000!important;color:#FFFFFF!important}
+.asset-local-pill{border-color:#FAC2C2;background:#FFF5F5;color:#850000}
+.toast{background:#690000!important;color:#FFFFFF!important}
+/* Deliberately preserve phone/app preview tokens: --mock-primary and related values are set by palette logic. */
+
+/* DARK WEBSITE THEME using the supplied B100-B700 neutrals; app previews stay independent. */
+:root {
+  color-scheme: dark;
+  --bg: #1C1C1E !important;       /* b700 */
+  --panel: #333333 !important;    /* b100 */
+  --panel2: #4D4D4D !important;   /* b600 */
+  --border: #666666 !important;   /* b200 / b300 */
+  --text: #F0F0F0 !important;     /* b400 */
+  --muted: #EBEBEB !important;    /* b500 */
+  --accent: #E90000 !important;
+  --accentText: #FFFFFF !important;
+  --danger: #FF6B6B !important;
+}
+html { color-scheme: dark; background: #1C1C1E; }
+body { background: #1C1C1E !important; color: #F0F0F0 !important; }
+.panel, .screen-selector-wrap, .mode-toggle, .app-tabs,
+.asset-controls, .asset-preview-panel, .asset-section,
+.asset-card, .asset-editor, .asset-export, .card {
+  background-color: #333333 !important;
+  border-color: #666666 !important;
+  color: #F0F0F0 !important;
+}
+input:not([type="color"]), select, textarea,
+.asset-select, .asset-number, .asset-code-input, .asset-dropzone {
+  background-color: #1C1C1E !important;
+  color: #F0F0F0 !important;
+  border-color: #666666 !important;
+}
+input::placeholder, textarea::placeholder { color: #EBEBEB !important; }
+label, .fieldlabel, .eyebrow, .help, .note, .footer,
+.asset-intro p, .asset-section-heading p, .screen-selector-label {
+  color: #EBEBEB !important;
+}
+.app-tabs .app-tab, .screen-toggle button, .mode-toggle button,
+.btn:not(.primary), .asset-platform-tab {
+  background: #4D4D4D !important;
+  color: #F0F0F0 !important;
+  border-color: #666666 !important;
+}
+.app-tabs .app-tab.active, .screen-toggle button.active,
+.mode-toggle button.active, .asset-platform-tab.active,
+.btn.primary, button.primary, .logo {
+  background: #E90000 !important;
+  color: #FFFFFF !important;
+  border-color: #E90000 !important;
+}
+.btn:hover, button:hover { filter: brightness(1.12); }
+.status { background: #292020 !important; color: #F5DADA !important; border-color: #633030 !important; }
+.status strong { color: #FFFFFF !important; }
+.asset-local-pill { background: #292020 !important; color: #F5DADA !important; border-color: #633030 !important; }
+.toast { background: #E90000 !important; color: #FFFFFF !important; }
+hr, .divider { border-color: #666666 !important; }
+/* Keep the actual phone/app previews independent from the website's dark theme. */
