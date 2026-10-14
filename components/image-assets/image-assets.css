@@ -86,3 +86,61 @@
 
 /* Match the splash canvas frame to the Brand Icon canvas: a clean, subtle single outline. */
 .asset-splash-canvas{border:1px solid rgba(100,110,125,.45) !important;outline:none !important;outline-offset:0;box-shadow:none !important;}
+
+/* Screen-background controls: align with the full-width asset settings cards. */
+.asset-android-preview-card .asset-phone-controls {
+  width: 100%;
+  max-width: none;
+  box-sizing: border-box;
+  margin: 14px 0 0;
+  padding: 14px;
+  gap: 10px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--panel);
+}
+.asset-android-preview-card .asset-phone-controls .fieldlabel {
+  display: block;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.asset-android-preview-card .asset-phone-color-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 42px;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+}
+.asset-android-preview-card .asset-phone-color-controls .asset-select {
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  box-sizing: border-box;
+  padding: 10px 12px;
+}
+.asset-android-preview-card .asset-phone-color-controls input[type="color"] {
+  width: 42px;
+  height: 42px;
+  box-sizing: border-box;
+}
+.asset-android-preview-card .asset-phone-color-controls .asset-phone-hex {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--panel2);
+  color: var(--text);
+  font: inherit;
+}
+.asset-android-preview-card .asset-phone-controls .asset-field-hint {
+  display: block;
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--muted);
+}
