@@ -6,6 +6,7 @@
 
 import { generate, normalizeHex, hexToRgb, rgbToHsb } from "./palette-engine.js";
 import { paletteObject, xmlExport, kotlinExport, swiftExport, assetContents } from "./palette-exporters.js";
+import { downloadElementScreenshot } from "./preview-screenshots.js";
 
 /** Small UI state and DOM helpers. */
 const $ = id => document.getElementById(id);
@@ -102,4 +103,8 @@ $("seedHex").addEventListener("input",()=>{$("seedHex").removeAttribute("aria-in
 $("threshold").addEventListener("change",generateFromInput);
 $("resetBtn").addEventListener("click",()=>{$("seedHex").value="#6750A4";$("seedPicker").value="#6750A4";$("threshold").value="20";generateFromInput()});
 $("copyAllBtn").addEventListener("click",()=>copy(current.colors.map(c=>`${c.name}: ${c.hex}`).join("\n")));
+$("downloadHomePreviewScreenshot")?.addEventListener("click", async () => {
+ try { await downloadElementScreenshot($("phonePreview"), "blueline-home-preview.png"); toast("Home preview screenshot downloaded"); }
+ catch (error) { toast(error.message || "Could not capture the preview"); }
+});
 generateFromInput();

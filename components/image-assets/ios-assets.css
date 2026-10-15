@@ -1,0 +1,211 @@
+
+/* iOS-specific layout. Brand Icon previews intentionally reuse Android's existing preview classes. */
+#iosAssetsPanel .ios-output-card {
+  margin-top: 0;
+}
+
+#iosAssetsPanel .ios-size-layout {
+  display: grid;
+  grid-template-columns: minmax(260px, .9fr) minmax(240px, 1.1fr);
+  gap: clamp(16px, 3vw, 30px);
+  align-items: start;
+}
+
+#iosAssetsPanel .ios-add-size-row {
+  display: grid;
+  gap: 7px;
+  margin-bottom: 10px;
+}
+
+#iosAssetsPanel .ios-inline-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+}
+
+#iosAssetsPanel .ios-inline-fields .btn {
+  white-space: nowrap;
+}
+
+#iosAssetsPanel .ios-size-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+#iosAssetsPanel .ios-size-item {
+  display: grid;
+  grid-template-columns: minmax(70px, 1fr) minmax(90px, 1fr) auto auto;
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--panel2);
+}
+
+#iosAssetsPanel .ios-size-item strong {
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+#iosAssetsPanel .ios-size-item .asset-select {
+  min-width: 0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-size: 12px;
+}
+
+#iosAssetsPanel .ios-size-item .btn {
+  padding: 8px 10px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+#iosAssetsPanel .ios-size-remove {
+  padding-inline: 8px;
+}
+
+#iosAssetsPanel .ios-source-panel {
+  margin-bottom: 4px;
+}
+
+#iosAssetsPanel .ios-preview-tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 9px;
+  flex-wrap: wrap;
+}
+
+#iosAssetsPanel .ios-preview-tools .btn {
+  min-width: 32px;
+  padding: 6px 9px;
+  line-height: 1;
+}
+
+#iosAssetsPanel .ios-zoom-readout {
+  font-size: 11px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  margin-left: 3px;
+}
+
+/* Keep the screen mockup below the canvas preview in the right-hand pane. */
+#iosAssetsPanel .ios-screen-preview-card {
+  margin-top: 22px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#iosAssetsPanel .ios-screen-preview-card .asset-phone-shell {
+  margin-inline: auto;
+}
+
+#iosAssetsPanel .ios-screen-preview-card .asset-phone-controls {
+  margin-top: 14px;
+}
+
+#iosAssetsPanel .ios-square-cleanup {
+  margin: 14px 0;
+}
+
+#iosAssetsPanel .ios-app-color-row > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 42px;
+  gap: 7px;
+  align-items: center;
+}
+
+#iosAssetsPanel .ios-app-color-row .asset-select {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+#iosAssetsPanel .ios-island-preview-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  padding: 28px 18px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: auto;
+}
+
+#iosAssetsPanel .ios-island-preview {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  overflow: visible;
+  border: 1px dashed rgba(100, 110, 125, .75);
+  outline: 1px solid rgba(100, 110, 125, .25);
+  outline-offset: 3px;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent;
+}
+
+#iosAssetsPanel .ios-island-preview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: fill;
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: none !important;
+}
+
+#iosAssetsPanel .ios-island-preview img[hidden] {
+  display: none;
+}
+
+#iosAssetsPanel .ios-cleanup-actions {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 850px) {
+  #iosAssetsPanel .ios-size-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 800px) {
+  #iosAssetsPanel .ios-size-item {
+    grid-template-columns: minmax(60px, 1fr) minmax(90px, 1fr) auto;
+  }
+
+  #iosAssetsPanel .ios-size-remove {
+    grid-column: 3;
+  }
+}
+
+@media (max-width: 520px) {
+  #iosAssetsPanel .ios-size-item {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  #iosAssetsPanel .ios-size-item .btn {
+    width: 100%;
+  }
+
+  #iosAssetsPanel .ios-size-remove {
+    grid-column: auto;
+  }
+
+  #iosAssetsPanel .ios-inline-fields {
+    grid-template-columns: 1fr;
+  }
+
+  #iosAssetsPanel .ios-island-preview-wrap {
+    padding: 18px 10px;
+  }
+}

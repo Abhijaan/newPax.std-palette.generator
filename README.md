@@ -85,3 +85,10 @@ Reference: <https://developer.android.com/develop/ui/views/launch/splash-screen>
 - Splash export defaults to SVG. PNG resolution controls are shown only when PNG is selected.
 - Brand Icon export is PNG-only by default; its PNG resolution selector supports 1×–4× and a custom square output size.
 - Raster background removal uses a color-tolerance flood fill on connected pixels. Click a background region in the Brand Icon preview for manual removal; undo/restore are available.
+
+
+### Preview screenshots and independent Brand Icon sources
+
+- Use **Choose own SVG / PNG** in Brand Icon settings to load a separate logo. SVG sources are rasterized before Brand Icon raster edits; PNG sources are edited directly. **Use shared SVG** switches back to the common source. Changing the Brand Icon source never overwrites the shared Splash SVG.
+- Screenshot buttons export the Blueline Home preview, Splash Icon preview, Brand Icon preview, and Android welcome-screen preview as PNG images. The DOM-based preview screenshot feature uses the browser's SVG `foreignObject` rendering; complex browser-specific CSS or unavailable web fonts may render differently from the live page.
+- Dropdowns use a consistent inset arrow and reserved right-side padding while retaining native keyboard/select behavior.

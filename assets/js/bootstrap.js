@@ -1,7 +1,9 @@
+
 /** Loads independently maintained feature components before their controllers. */
 async function loadComponent(selector, path) {
   const mount = document.querySelector(selector);
   if (!mount) return;
+
   try {
     const response = await fetch(path);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -13,8 +15,16 @@ async function loadComponent(selector, path) {
   }
 }
 
-await loadComponent('[data-component="mobile-home"]', 'components/mobile-home/home-screen.html');
-await loadComponent('[data-component="image-assets"]', 'components/image-assets/image-assets.html');
+await loadComponent(
+  '[data-component="mobile-home"]',
+  'components/mobile-home/home-screen.html'
+);
+
+await loadComponent(
+  '[data-component="image-assets"]',
+  'components/image-assets/image-assets.html'
+);
+
 const home = document.querySelector('[data-component="mobile-home"]');
 if (home) home.classList.add('home-mobile-component');
 
@@ -26,6 +36,7 @@ document.querySelectorAll('[data-tab]').forEach(button => {
       tab.classList.toggle('active', active);
       tab.setAttribute('aria-selected', String(active));
     });
+
     document.querySelectorAll('.tab-panel').forEach(panel => {
       const active = panel.id === button.dataset.tab;
       panel.classList.toggle('active', active);
@@ -36,3 +47,4 @@ document.querySelectorAll('[data-tab]').forEach(button => {
 
 await import('./app.js');
 await import('../../components/image-assets/image-assets.js');
+await import('../../components/image-assets/ios-assets.js');
