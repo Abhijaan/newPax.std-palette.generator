@@ -1,409 +1,527 @@
-
+<!-- iOS uses its own source workspace; it never overwrites the Android source. -->
 <section class="panel asset-import-panel ios-source-panel">
-  <div>
-    <div class="eyebrow">IOS SOURCE</div>
-    <h3>Start with your SVG</h3>
-    <p>Load one SVG for the iOS outputs below. The imported SVG is copied into three independent iOS workspaces, so cleanup in one output does not change the others.</p>
+ <div>
+  <div class="eyebrow">
+   IOS SOURCE
   </div>
-
-  <div class="asset-import-grid">
-    <label class="asset-dropzone" for="iosSvgFileInput" id="iosSvgDropzone">
-      <span class="material-symbols-rounded asset-upload-icon">upload_file</span>
-      <strong>Choose an SVG file</strong>
-      <span>or drop it here</span>
-      <small>SVG format only</small>
+  <h3>
+   Start with your SVG
+  </h3>
+  <p>
+   Load one SVG for the iOS outputs below. The iOS source is independent from the Android SVG.
+  </p>
+ </div>
+ <div class="asset-import-grid">
+  <label class="asset-dropzone" for="iosSvgFileInput" id="iosSvgDropzone">
+   <span class="material-symbols-rounded asset-upload-icon">
+    upload_file
+   </span>
+   <strong>
+    Choose an SVG file
+   </strong>
+   <span>
+    or drop it here
+   </span>
+   <small>
+    SVG format only
+   </small>
+  </label>
+  <div class="asset-source-wrap">
+   <label class="fieldlabel" for="iosSvgSourceInput">
+    iOS SVG source editor
+   </label>
+   <textarea class="asset-code-input" id="iosSvgSourceInput" placeholder="Paste SVG markup here..." rows="8" spellcheck="false"></textarea>
+   <div class="asset-actions">
+    <button class="btn primary" id="iosLoadSvgBtn">
+     Apply SVG
+    </button>
+    <button class="btn" id="iosClearSvgBtn">
+     Clear
+    </button>
+   </div>
+  </div>
+ </div>
+ <input accept=".svg,image/svg+xml" hidden="" id="iosSvgFileInput" type="file"/>
+ <div aria-live="polite" class="asset-message" id="iosAssetStatus" role="status">
+  Add an SVG to begin.
+ </div>
+</section>
+<!-- Output 01: configurable list of square SVG/PNG exports. -->
+<div class="asset-section-heading">
+ <div>
+  <div class="eyebrow">
+   IOS OUTPUT 01
+  </div>
+  <h3>
+   Square icon exports
+  </h3>
+  <p>
+   Generate several square assets from the same SVG. Choose SVG or PNG independently for every size.
+  </p>
+ </div>
+ <span class="asset-spec-chip">
+  90 &times; 90 and 1024 &times; 1024 by default
+ </span>
+</div>
+<section class="panel asset-output-card ios-output-card">
+ <div class="ios-size-layout">
+  <div class="asset-settings">
+   <h4>
+    Dimensions
+   </h4>
+   <div class="ios-add-size-row">
+    <label class="fieldlabel" for="iosNewSquareSize">
+     Add square size (px)
     </label>
-    <div class="asset-source-wrap">
-      <label class="fieldlabel" for="iosSvgSourceInput">iOS SVG source editor</label>
-      <textarea id="iosSvgSourceInput" class="asset-code-input" spellcheck="false" rows="8" placeholder="Paste SVG markup here..."></textarea>
-      <div class="asset-actions">
-        <button class="btn primary" id="iosLoadSvgBtn">Apply SVG</button>
-        <button class="btn" id="iosClearSvgBtn">Clear</button>
-      </div>
+    <div class="ios-inline-fields">
+     <input class="asset-number" id="iosNewSquareSize" max="4096" min="1" type="number" value="180"/>
+     <button class="btn" id="iosAddSquareSizeBtn" type="button">
+      Add size
+     </button>
     </div>
+   </div>
+   <p class="asset-field-hint">
+    Each row has its own format and download action. All dimensions remain square.
+   </p>
+   <div aria-live="polite" class="ios-size-list" id="iosSquareSizeList">
+   </div>
   </div>
-
-  <input type="file" id="iosSvgFileInput" accept=".svg,image/svg+xml" hidden>
-  <div class="asset-message" id="iosAssetStatus" role="status" aria-live="polite">Add an SVG to begin.</div>
+  <div class="asset-live-preview">
+   <div class="asset-preview-title">
+    <h4>
+     Source preview
+    </h4>
+    <span id="iosSquarePreviewSize">
+     90 &times; 90 px
+    </span>
+   </div>
+   <div class="ios-preview-tools">
+    <button aria-label="Zoom out square preview" class="btn ios-zoom-out" data-ios-zoom="square" data-zoom-step="-1" type="button">
+     &minus;
+    </button>
+    <button aria-label="Zoom in square preview" class="btn ios-zoom-in" data-ios-zoom="square" data-zoom-step="1" type="button">
+     +
+    </button>
+    <button class="btn ios-zoom-reset" data-ios-zoom-reset="square" type="button">
+     Reset
+    </button>
+    <span class="ios-zoom-readout" id="iosSquareZoomReadout">
+     100%
+    </span>
+   </div>
+   <div class="ios-preview-stage checkerboard ios-guides" id="iosSquarePreviewStage">
+    <img alt="iOS square icon preview" hidden="" id="iosSquarePreview"/>
+    <span aria-hidden="true" class="asset-preview-empty" id="iosSquareEmpty">
+    </span>
+   </div>
+   <p class="asset-preview-caption">
+    Exports preserve the SVG artwork and fit it proportionally inside each square canvas.
+   </p>
+  </div>
+ </div>
 </section>
-
+<!-- Output 02: editable app icon and its right-pane screen mockup. -->
 <div class="asset-section-heading">
-  <div>
-    <div class="eyebrow">IOS OUTPUT 01</div>
-    <h3>Square icon exports</h3>
-    <p>Generate several square assets from the same SVG. Choose SVG or PNG independently for every size.</p>
+ <div>
+  <div class="eyebrow">
+   IOS OUTPUT 02
   </div>
-  <span class="asset-spec-chip">90 × 90 and 1024 × 1024 by default</span>
+  <h3>
+   App icon / brand mark
+  </h3>
+  <p>
+   Prepare a square SVG with background controls, SVG cleanup, padding, scale and positioning.
+  </p>
+ </div>
+ <span class="asset-spec-chip">
+  136 &times; 136 px default &middot; SVG only
+ </span>
 </div>
-
 <section class="panel asset-output-card ios-output-card">
-  <div class="ios-size-layout">
-    <div class="asset-settings">
-      <h4>Dimensions</h4>
-
-      <div class="ios-add-size-row">
-        <label class="fieldlabel" for="iosNewSquareSize">Add square size (px)</label>
-        <div class="ios-inline-fields">
-          <input id="iosNewSquareSize" class="asset-number" type="number" min="1" max="4096" value="180">
-          <button class="btn" id="iosAddSquareSizeBtn" type="button">Add size</button>
-        </div>
-      </div>
-
-      <p class="asset-field-hint">Each row has its own format and download action. All dimensions remain square.</p>
-
-      <div class="asset-local-editor ios-square-cleanup">
-        <div class="asset-local-editor-head">
-          <strong>Square icon background</strong>
-          <span>Independent from Brand Icon and Dynamic Island</span>
-        </div>
-        <div class="asset-local-detect">
-          <div>
-            <b>Auto-detect background</b>
-            <small>Removes a likely full-canvas shape from square icons only.</small>
-          </div>
-          <button class="btn" id="iosSquareDetectBgBtn" disabled>Detect &amp; remove</button>
-        </div>
-        <div class="asset-local-recovery">
-          <button class="btn" id="iosSquareUndoBtn" disabled>↶ Undo</button>
-          <button class="btn" id="iosSquareRestoreBtn" disabled>Restore original</button>
-        </div>
-      </div>
-
-      <label class="asset-check">
-        <input type="checkbox" id="iosSquareIncludeBackground">
-        <span>
-          <strong>Include background</strong>
-          <small>Toggle a solid background behind square icons.</small>
-        </span>
-      </label>
-
-      <div class="asset-color-row asset-brand-color-row">
-        <label class="fieldlabel" for="iosSquarePaletteColor">Brand background</label>
-        <div>
-          <select id="iosSquarePaletteColor" class="asset-select" aria-label="Choose square icon brand color">
-            <option value="#FFFFFF">Custom / white</option>
-          </select>
-          <input type="color" id="iosSquareBgColor" value="#FFFFFF" aria-label="Custom square icon background color">
-          <input type="text" id="iosSquareBgHex" value="#FFFFFF" maxlength="7" aria-label="Square icon background hex">
-        </div>
-      </div>
-
-      <label class="fieldlabel" for="iosSquarePadding">
-        Content padding <strong id="iosSquarePaddingValue">12%</strong>
-      </label>
-      <input class="asset-range" type="range" id="iosSquarePadding" min="0" max="40" value="12">
-      <div class="asset-range-labels">
-        <span>Edge-to-edge</span>
-        <span>More breathing room</span>
-      </div>
-
-      <label class="fieldlabel" for="iosSquareScale">
-        Artwork scale <strong id="iosSquareScaleValue">100%</strong>
-      </label>
-      <input class="asset-range" type="range" id="iosSquareScale" min="25" max="250" value="100">
-      <div class="asset-range-labels">
-        <span>25% smaller</span>
-        <span>250% · can extend beyond frame</span>
-      </div>
-
-      <div class="ios-size-list" id="iosSquareSizeList" aria-live="polite"></div>
+ <div class="asset-brand-grid">
+  <div class="asset-settings">
+   <h4>
+    App icon settings
+   </h4>
+   <div class="asset-local-editor">
+    <div class="asset-local-editor-head">
+     <strong>
+      SVG cleanup
+     </strong>
+     <span>
+      iOS source only
+     </span>
     </div>
-
-    <div class="asset-live-preview">
-      <div class="asset-preview-title">
-        <h4>Source preview</h4>
-        <span id="iosSquarePreviewSize">90 × 90 px</span>
-      </div>
-
-      <div class="ios-preview-tools">
-        <button type="button" class="btn ios-zoom-out" data-ios-zoom="square" data-zoom-step="-1" aria-label="Zoom out square preview">−</button>
-        <button type="button" class="btn ios-zoom-in" data-ios-zoom="square" data-zoom-step="1" aria-label="Zoom in square preview">+</button>
-        <button type="button" class="btn ios-zoom-reset" data-ios-zoom-reset="square">Reset</button>
-        <span class="ios-zoom-readout" id="iosSquareZoomReadout">100%</span>
-      </div>
-
-      <div class="asset-brand-stage checkerboard" id="iosSquarePreviewStage">
-        <div class="asset-brand-square" id="iosSquareFrame" tabindex="0" role="application" aria-label="Square icon canvas">
-          <img id="iosSquarePreview" alt="iOS square icon preview" hidden>
-        </div>
-      </div>
-
-      <div class="asset-preview-details">
-        <div><span>Canvas</span><strong id="iosSquareCanvasInfo">90 × 90 px</strong></div>
-        <div><span>Padding</span><strong id="iosSquarePaddingInfo">12%</strong></div>
-        <div><span>Background</span><strong id="iosSquareBackgroundInfo">Transparent</strong></div>
-      </div>
-
-      <p class="asset-preview-caption">Exports preserve the SVG artwork and fit it proportionally inside each square canvas.</p>
+    <div class="asset-local-detect">
+     <div>
+      <b>
+       Auto-detect background
+      </b>
+      <small>
+       Remove a likely full-canvas SVG shape.
+      </small>
+     </div>
+     <button class="btn" disabled="" id="iosAppDetectBgBtn">
+      Detect &amp; remove
+     </button>
     </div>
+    <div class="asset-local-delete">
+     <label class="fieldlabel" for="iosAppElementSelect">
+      Select element
+      <span class="asset-count-pill" id="iosAppElementCount">
+       0
+      </span>
+     </label>
+     <select class="asset-select" disabled="" id="iosAppElementSelect">
+      <option>
+       Load SVG first
+      </option>
+     </select>
+     <button class="btn danger" disabled="" id="iosAppDeleteElementBtn">
+      Delete selected
+     </button>
+    </div>
+    <div class="asset-local-recovery">
+     <button class="btn" disabled="" id="iosAppUndoBtn">
+      &curvearrowleft; Undo
+     </button>
+     <button class="btn" disabled="" id="iosAppRestoreBtn">
+      Restore original
+     </button>
+    </div>
+   </div>
+   <label class="asset-check">
+    <input id="iosAppIncludeBackground" type="checkbox"/>
+    <span>
+     <strong>
+      Include background
+     </strong>
+     <small>
+      Add a background rectangle to the exported SVG.
+     </small>
+    </span>
+   </label>
+   <div class="asset-color-row">
+    <label class="fieldlabel" for="iosAppBgColor">
+     Background color
+    </label>
+    <div>
+     <input id="iosAppBgColor" type="color" value="#FFFFFF"/>
+     <input aria-label="iOS app icon background hex" id="iosAppBgHex" maxlength="7" type="text" value="#FFFFFF"/>
+    </div>
+   </div>
+   <label class="fieldlabel" for="iosAppDimension">
+    Canvas dimension
+    <strong id="iosAppDimensionValue">
+     136 &times; 136 px
+    </strong>
+   </label>
+   <input class="asset-number" id="iosAppDimension" max="4096" min="1" type="number" value="136"/>
+   <label class="fieldlabel" for="iosAppPadding">
+    Content padding
+    <strong id="iosAppPaddingValue">
+     12%
+    </strong>
+   </label>
+   <input class="asset-range" id="iosAppPadding" max="40" min="0" type="range" value="12"/>
+   <div class="asset-range-labels">
+    <span>
+     Edge-to-edge
+    </span>
+    <span>
+     More breathing room
+    </span>
+   </div>
+   <label class="fieldlabel" for="iosAppScale">
+    Artwork scale
+    <strong id="iosAppScaleValue">
+     100%
+    </strong>
+   </label>
+   <input class="asset-range" id="iosAppScale" max="250" min="25" type="range" value="100"/>
+   <div class="asset-range-labels">
+    <span>
+     25%
+    </span>
+    <span>
+     250%
+    </span>
+   </div>
+   <label class="fieldlabel" for="iosAppCornerRadius">
+    Round background corners
+    <strong id="iosAppCornerValue">
+     0% · 0 px
+    </strong>
+   </label>
+   <input class="asset-range" id="iosAppCornerRadius" max="50" min="0" type="range" value="0"/>
+   <div class="asset-position-controls">
+    <label class="fieldlabel">
+     Move artwork
+    </label>
+    <div class="asset-position-row">
+     <button class="btn asset-arrow" data-ios-app-move="up" type="button">
+      &uarr;
+     </button>
+     <button class="btn asset-arrow" data-ios-app-move="left" type="button">
+      &larr;
+     </button>
+     <button class="btn asset-arrow" data-ios-app-move="down" type="button">
+      &darr;
+     </button>
+     <button class="btn asset-arrow" data-ios-app-move="right" type="button">
+      &rarr;
+     </button>
+     <button class="btn" id="iosAppCenterBtn" type="button">
+      Center
+     </button>
+    </div>
+    <div class="asset-offset-readout" id="iosAppOffsetReadout">
+     X 0 &middot; Y 0
+    </div>
+   </div>
+   <button class="btn primary asset-download-btn" disabled="" id="iosAppDownloadBtn">
+    Download app icon SVG
+   </button>
   </div>
+  <div class="asset-live-preview">
+   <div class="asset-preview-title">
+    <h4>
+     App icon preview
+    </h4>
+    <span id="iosAppPreviewDimensions">
+     136 &times; 136 px
+    </span>
+   </div>
+   <div class="ios-preview-tools">
+    <button aria-label="Zoom out app icon preview" class="btn ios-zoom-out" data-ios-zoom="app" data-zoom-step="-1" type="button">
+     &minus;
+    </button>
+    <button aria-label="Zoom in app icon preview" class="btn ios-zoom-in" data-ios-zoom="app" data-zoom-step="1" type="button">
+     +
+    </button>
+    <button class="btn ios-zoom-reset" data-ios-zoom-reset="app" type="button">
+     Reset
+    </button>
+    <span class="ios-zoom-readout" id="iosAppZoomReadout">
+     100%
+    </span>
+   </div>
+   <div class="ios-preview-stage checkerboard ios-guides" id="iosAppPreviewStage">
+    <img alt="iOS app icon SVG preview" hidden="" id="iosAppPreview"/>
+    <span aria-hidden="true" class="asset-preview-empty" id="iosAppEmpty">
+    </span>
+   </div>
+   <p class="asset-preview-caption">
+    This output remains SVG. The dimension controls its SVG width, height and square viewBox; no PNG conversion is performed.
+   </p>
+   <div class="ios-screen-preview-card">
+    <div class="asset-preview-title">
+     <h4>
+      iOS screen preview
+     </h4>
+     <div class="asset-preview-actions">
+      <span>
+       Welcome screen mockup
+      </span>
+      <button aria-label="Zoom out screen preview" class="btn ios-zoom-out" data-ios-zoom="screen" data-zoom-step="-1" type="button">
+       &minus;
+      </button>
+      <button aria-label="Zoom in screen preview" class="btn ios-zoom-in" data-ios-zoom="screen" data-zoom-step="1" type="button">
+       +
+      </button>
+      <button class="btn ios-zoom-reset" data-ios-zoom-reset="screen" type="button">
+       Reset
+      </button>
+      <span class="ios-zoom-readout" id="iosScreenZoomReadout">
+       100%
+      </span>
+     </div>
+    </div>
+    <div class="ios-screen-preview-stage" id="iosScreenPreviewStage">
+     <div class="ios-phone-shell">
+      <div class="ios-phone-island">
+      </div>
+      <div class="ios-phone-screen">
+       <div class="ios-phone-brand-icon">
+        <img alt="Brand icon on iOS welcome screen" hidden="" id="iosScreenBrandImage"/>
+       </div>
+       <div class="ios-phone-copy">
+        <strong>
+         Welcome
+        </strong>
+        <span>
+         Enjoy a smoother, faster experience.
+        </span>
+       </div>
+       <div class="ios-phone-cta">
+        Get Started
+       </div>
+       <div class="ios-phone-home-indicator">
+       </div>
+      </div>
+     </div>
+    </div>
+    <p class="asset-preview-caption">
+     A device mockup to check how the brand icon feels in a real screen layout. Preview zoom does not affect the export.
+    </p>
+   </div>
+  </div>
+ </div>
 </section>
-
+<!-- Output 03: fixed-height Dynamic Island export. -->
 <div class="asset-section-heading">
-  <div>
-    <div class="eyebrow">IOS OUTPUT 02</div>
-    <h3>App icon / brand mark</h3>
-    <p>Prepare a square SVG with background controls, SVG cleanup, padding, scale and positioning.</p>
+ <div>
+  <div class="eyebrow">
+   IOS OUTPUT 03
   </div>
-  <span class="asset-spec-chip">136 × 136 px default · SVG only</span>
+  <h3>
+   Dynamic Island asset
+  </h3>
+  <p>
+   Create a slim horizontal SVG with a fixed 18 px height and adjustable width.
+  </p>
+ </div>
+ <span class="asset-spec-chip">
+  18 px height &middot; custom width
+ </span>
 </div>
-
 <section class="panel asset-output-card ios-output-card">
-  <div class="asset-brand-grid">
-    <div class="asset-settings">
-      <h4>App icon settings</h4>
-
-      <div class="asset-local-editor">
-        <div class="asset-local-editor-head">
-          <strong>SVG cleanup</strong>
-          <span>iOS source only</span>
-        </div>
-        <div class="asset-local-detect">
-          <div>
-            <b>Auto-detect background</b>
-            <small>Remove a likely full-canvas SVG shape.</small>
-          </div>
-          <button class="btn" id="iosAppDetectBgBtn" disabled>Detect &amp; remove</button>
-        </div>
-        <div class="asset-local-delete">
-          <label class="fieldlabel" for="iosAppElementSelect">
-            Select element <span class="asset-count-pill" id="iosAppElementCount">0</span>
-          </label>
-          <select id="iosAppElementSelect" class="asset-select" disabled>
-            <option>Load SVG first</option>
-          </select>
-          <button class="btn danger" id="iosAppDeleteElementBtn" disabled>Delete selected</button>
-        </div>
-        <div class="asset-local-recovery">
-          <button class="btn" id="iosAppUndoBtn" disabled>↶ Undo</button>
-          <button class="btn" id="iosAppRestoreBtn" disabled>Restore original</button>
-        </div>
-      </div>
-
-      <label class="asset-check">
-        <input type="checkbox" id="iosAppIncludeBackground">
-        <span>
-          <strong>Include background</strong>
-          <small>Add a background rectangle to the exported SVG.</small>
-        </span>
-      </label>
-
-      <div class="asset-color-row ios-app-color-row">
-        <label class="fieldlabel" for="iosAppPaletteColor">Brand background</label>
-        <div>
-          <select id="iosAppPaletteColor" class="asset-select" aria-label="Choose brand palette color">
-            <option value="#FFFFFF">Custom / white</option>
-          </select>
-          <input type="color" id="iosAppBgColor" value="#FFFFFF" aria-label="Custom brand background color">
-          <input type="text" id="iosAppBgHex" value="#FFFFFF" maxlength="7" aria-label="Brand icon background hex">
-        </div>
-      </div>
-
-      <label class="fieldlabel" for="iosAppDimension">
-        Canvas dimension <strong id="iosAppDimensionValue">136 × 136 px</strong>
-      </label>
-      <input class="asset-number" id="iosAppDimension" type="number" min="1" max="4096" value="136">
-
-      <label class="fieldlabel" for="iosAppPadding">
-        Content padding <strong id="iosAppPaddingValue">12%</strong>
-      </label>
-      <input class="asset-range" type="range" id="iosAppPadding" min="0" max="40" value="12">
-      <div class="asset-range-labels">
-        <span>Edge-to-edge</span>
-        <span>More breathing room</span>
-      </div>
-
-      <label class="fieldlabel" for="iosAppScale">
-        Artwork scale <strong id="iosAppScaleValue">100%</strong>
-      </label>
-      <input class="asset-range" type="range" id="iosAppScale" min="25" max="250" value="100">
-      <div class="asset-range-labels">
-        <span>25%</span>
-        <span>250%</span>
-      </div>
-
-      <label class="fieldlabel" for="iosAppCornerRadius">
-        Round background corners <strong id="iosAppCornerValue">0% · 0 px</strong>
-      </label>
-      <input class="asset-range" type="range" id="iosAppCornerRadius" min="0" max="50" value="0">
-
-      <div class="asset-position-controls">
-        <label class="fieldlabel">Move artwork</label>
-        <div class="asset-position-row">
-          <button type="button" class="btn asset-arrow" data-ios-app-move="up">↑</button>
-          <button type="button" class="btn asset-arrow" data-ios-app-move="left">←</button>
-          <button type="button" class="btn asset-arrow" data-ios-app-move="down">↓</button>
-          <button type="button" class="btn asset-arrow" data-ios-app-move="right">→</button>
-          <button type="button" class="btn" id="iosAppCenterBtn">Center</button>
-        </div>
-        <div class="asset-offset-readout" id="iosAppOffsetReadout">X 0 · Y 0</div>
-      </div>
-
-      <button class="btn primary asset-download-btn" id="iosAppDownloadBtn" disabled>Download app icon SVG</button>
+ <div class="asset-brand-grid">
+  <div class="asset-settings">
+   <h4>
+    Dynamic Island settings
+   </h4>
+   <div class="asset-local-editor">
+    <div class="asset-local-editor-head">
+     <strong>
+      Background cleanup
+     </strong>
+     <span>
+      Uses iOS source SVG
+     </span>
     </div>
-
-    <div class="asset-live-preview">
-      <div class="asset-preview-title">
-        <h4>App icon preview</h4>
-        <span id="iosAppPreviewDimensions">136 × 136 px</span>
-      </div>
-
-      <div class="ios-preview-tools">
-        <button type="button" class="btn ios-zoom-out" data-ios-zoom="app" data-zoom-step="-1" aria-label="Zoom out app icon preview">−</button>
-        <button type="button" class="btn ios-zoom-in" data-ios-zoom="app" data-zoom-step="1" aria-label="Zoom in app icon preview">+</button>
-        <button type="button" class="btn ios-zoom-reset" data-ios-zoom-reset="app">Reset</button>
-        <span class="ios-zoom-readout" id="iosAppZoomReadout">100%</span>
-      </div>
-
-      <div class="asset-brand-stage checkerboard" id="iosAppPreviewStage">
-        <div class="asset-brand-square" id="iosAppFrame" tabindex="0" role="application" aria-label="Brand icon canvas">
-          <img id="iosAppPreview" alt="iOS app icon SVG preview" hidden>
-        </div>
-      </div>
-
-      <div class="asset-preview-details">
-        <div><span>Canvas</span><strong id="iosAppCanvasInfo">136 × 136 px</strong></div>
-        <div><span>Padding</span><strong id="iosAppPaddingInfo">12%</strong></div>
-        <div><span>Background</span><strong id="iosAppBackgroundInfo">Transparent</strong></div>
-      </div>
-
-      <p class="asset-preview-caption">This output remains SVG. The dimension controls its SVG width, height and square viewBox; no PNG conversion is performed.</p>
-
-      <!-- The screen preview is intentionally inside the right-hand preview pane,
-           immediately below the canvas preview, matching Android's layout. -->
-      <div class="asset-android-preview-card ios-screen-preview-card">
-        <div class="asset-preview-title">
-          <h4>iOS screen preview</h4>
-          <div class="asset-preview-actions"><span>Fixed reference layout</span></div>
-        </div>
-
-        <div class="asset-phone-shell onboarding-phone">
-          <div class="asset-phone-status">
-            <span>2:19</span>
-            <span class="asset-status-icons"><i></i><i></i><i></i></span>
-          </div>
-          <div class="asset-phone-camera"></div>
-          <div class="asset-phone-screen" id="iosPhoneScreen">
-            <div class="asset-phone-logo" id="iosPhoneIcon">
-              <img id="iosScreenBrandImage" alt="Brand icon on iOS welcome screen" hidden>
-            </div>
-            <div class="asset-phone-welcome-copy">
-              <div class="asset-phone-welcome-title">Welcome</div>
-              <div class="asset-phone-welcome-subtitle">Enjoy a smoother, faster experience by booking your ride with WEBTAXI</div>
-            </div>
-            <button type="button" class="asset-phone-cta" id="iosPhoneWelcomeButton">Get Started</button>
-            <div class="asset-phone-navigation">
-              <span class="nav-back"></span>
-              <span class="nav-home"></span>
-              <span class="nav-recents"></span>
-            </div>
-          </div>
-        </div>
-
-        <div class="asset-phone-controls">
-          <label class="fieldlabel" for="iosPhoneBgPalette">Screen background</label>
-          <div class="asset-phone-color-controls">
-            <select id="iosPhoneBgPalette" class="asset-select" aria-label="Choose a brand color">
-              <option value="#F36D21">Brand orange · #F36D21</option>
-            </select>
-            <input type="color" id="iosPhoneBgColor" value="#F36D21" aria-label="Choose custom screen background color">
-            <input type="text" id="iosPhoneBgHex" class="asset-phone-hex" value="#F36D21" maxlength="7" spellcheck="false" aria-label="Custom screen background hex value" placeholder="#RRGGBB">
-          </div>
-          <small class="asset-field-hint">Choose a palette shade or use the color picker / enter a hex value.</small>
-        </div>
-      </div>
+    <div class="asset-local-detect">
+     <div>
+      <b>
+       Remove background shape
+      </b>
+      <small>
+       Remove a likely full-canvas background from the shared iOS SVG.
+      </small>
+     </div>
+     <div class="ios-cleanup-actions">
+      <button class="btn" disabled="" id="iosIslandDetectBgBtn">
+       Detect &amp; remove
+      </button>
+      <button class="btn" disabled="" id="iosIslandUndoBtn">
+       &curvearrowleft; Undo
+      </button>
+     </div>
     </div>
+   </div>
+   <label class="fieldlabel" for="iosIslandWidth">
+    Width
+    <strong id="iosIslandWidthValue">
+     120 px
+    </strong>
+   </label>
+   <input class="asset-range" id="iosIslandWidth" max="600" min="18" type="range" value="120"/>
+   <div class="asset-range-labels">
+    <span>
+     18 px
+    </span>
+    <span>
+     600 px
+    </span>
+   </div>
+   <label class="fieldlabel" for="iosIslandPadding">
+    Content padding
+    <strong id="iosIslandPaddingValue">
+     4%
+    </strong>
+   </label>
+   <input class="asset-range" id="iosIslandPadding" max="40" min="0" type="range" value="4"/>
+   <div class="asset-range-labels">
+    <span>
+     Edge-to-edge
+    </span>
+    <span>
+     More room
+    </span>
+   </div>
+   <label class="fieldlabel" for="iosIslandScale">
+    Artwork scale
+    <strong id="iosIslandScaleValue">
+     100%
+    </strong>
+   </label>
+   <input class="asset-range" id="iosIslandScale" max="250" min="25" type="range" value="100"/>
+   <div class="asset-range-labels">
+    <span>
+     25%
+    </span>
+    <span>
+     250%
+    </span>
+   </div>
+   <label class="asset-check">
+    <input id="iosIslandIncludeBackground" type="checkbox"/>
+    <span>
+     <strong>
+      Include background
+     </strong>
+     <small>
+      Add a solid background to the exported SVG.
+     </small>
+    </span>
+   </label>
+   <div class="asset-color-row">
+    <label class="fieldlabel" for="iosIslandBgColor">
+     Background color
+    </label>
+    <div>
+     <input id="iosIslandBgColor" type="color" value="#000000"/>
+     <input aria-label="Dynamic Island background hex" id="iosIslandBgHex" maxlength="7" type="text" value="#000000"/>
+    </div>
+   </div>
+   <button class="btn primary asset-download-btn" disabled="" id="iosIslandDownloadBtn">
+    Download Dynamic Island SVG
+   </button>
   </div>
+  <div class="asset-live-preview">
+   <div class="asset-preview-title">
+    <h4>
+     Dynamic Island preview
+    </h4>
+    <span id="iosIslandPreviewDimensions">
+     120 &times; 18 px
+    </span>
+   </div>
+   <div class="ios-preview-tools">
+    <button aria-label="Zoom out Dynamic Island preview" class="btn ios-zoom-out" data-ios-zoom="island" data-zoom-step="-1" type="button">
+     &minus;
+    </button>
+    <button aria-label="Zoom in Dynamic Island preview" class="btn ios-zoom-in" data-ios-zoom="island" data-zoom-step="1" type="button">
+     +
+    </button>
+    <button class="btn ios-zoom-reset" data-ios-zoom-reset="island" type="button">
+     Reset
+    </button>
+    <span class="ios-zoom-readout" id="iosIslandZoomReadout">
+     100%
+    </span>
+   </div>
+   <div class="ios-island-preview-wrap" id="iosIslandPreviewStage">
+    <div class="ios-island-preview checkerboard ios-guides" id="iosIslandPreviewFrame">
+     <img alt="Dynamic Island SVG preview" hidden="" id="iosIslandPreview"/>
+     <span aria-hidden="true" class="asset-preview-empty" id="iosIslandEmpty">
+     </span>
+    </div>
+   </div>
+   <p class="asset-preview-caption">
+    The output height stays exactly 18 px. Width, padding and scale adjust the horizontal composition.
+   </p>
+  </div>
+ </div>
 </section>
 
-<div class="asset-section-heading">
-  <div>
-    <div class="eyebrow">IOS OUTPUT 03</div>
-    <h3>Dynamic Island asset</h3>
-    <p>Create a slim horizontal SVG with a fixed 18 px height and adjustable width.</p>
-  </div>
-  <span class="asset-spec-chip">18 px height · custom width</span>
-</div>
-
-<section class="panel asset-output-card ios-output-card">
-  <div class="asset-brand-grid">
-    <div class="asset-settings">
-      <h4>Dynamic Island settings</h4>
-
-      <div class="asset-local-editor">
-        <div class="asset-local-editor-head">
-          <strong>Background cleanup</strong>
-          <span>Uses iOS source SVG</span>
-        </div>
-        <div class="asset-local-detect">
-          <div>
-            <b>Remove background shape</b>
-            <small>Remove a likely full-canvas background from the shared iOS SVG.</small>
-          </div>
-          <div class="ios-cleanup-actions">
-            <button class="btn" id="iosIslandDetectBgBtn" disabled>Detect &amp; remove</button>
-            <button class="btn" id="iosIslandUndoBtn" disabled>↶ Undo</button>
-          </div>
-        </div>
-      </div>
-
-      <label class="fieldlabel" for="iosIslandWidth">
-        Width <strong id="iosIslandWidthValue">120 px</strong>
-      </label>
-      <input class="asset-range" type="range" id="iosIslandWidth" min="18" max="600" value="120">
-      <div class="asset-range-labels"><span>18 px</span><span>600 px</span></div>
-
-      <label class="fieldlabel" for="iosIslandPadding">
-        Content padding <strong id="iosIslandPaddingValue">4%</strong>
-      </label>
-      <input class="asset-range" type="range" id="iosIslandPadding" min="0" max="40" value="4">
-      <div class="asset-range-labels"><span>Edge-to-edge</span><span>More room</span></div>
-
-      <label class="fieldlabel" for="iosIslandScale">
-        Artwork scale <strong id="iosIslandScaleValue">100%</strong>
-      </label>
-      <input class="asset-range" type="range" id="iosIslandScale" min="25" max="250" value="100">
-      <div class="asset-range-labels"><span>25%</span><span>250%</span></div>
-
-      <label class="asset-check">
-        <input type="checkbox" id="iosIslandIncludeBackground">
-        <span>
-          <strong>Include background</strong>
-          <small>Add a solid background to the exported SVG.</small>
-        </span>
-      </label>
-
-      <div class="asset-color-row">
-        <label class="fieldlabel" for="iosIslandBgColor">Background color</label>
-        <div>
-          <input type="color" id="iosIslandBgColor" value="#000000">
-          <input type="text" id="iosIslandBgHex" value="#000000" maxlength="7" aria-label="Dynamic Island background hex">
-        </div>
-      </div>
-
-      <button class="btn primary asset-download-btn" id="iosIslandDownloadBtn" disabled>Download Dynamic Island SVG</button>
-    </div>
-
-    <div class="asset-live-preview">
-      <div class="asset-preview-title">
-        <h4>Dynamic Island preview</h4>
-        <span id="iosIslandPreviewDimensions">120 × 18 px</span>
-      </div>
-
-      <div class="ios-preview-tools">
-        <button type="button" class="btn ios-zoom-out" data-ios-zoom="island" data-zoom-step="-1" aria-label="Zoom out Dynamic Island preview">−</button>
-        <button type="button" class="btn ios-zoom-in" data-ios-zoom="island" data-zoom-step="1" aria-label="Zoom in Dynamic Island preview">+</button>
-        <button type="button" class="btn ios-zoom-reset" data-ios-zoom-reset="island">Reset</button>
-        <span class="ios-zoom-readout" id="iosIslandZoomReadout">100%</span>
-      </div>
-
-      <div class="ios-island-preview-wrap" id="iosIslandPreviewStage">
-        <div class="ios-island-preview ios-dimension-frame" id="iosIslandPreviewFrame">
-          <img id="iosIslandPreview" alt="Dynamic Island SVG preview" hidden>
-        </div>
-      </div>
-
-      <p class="asset-preview-caption">The output height stays exactly 18 px. Width, padding and scale adjust the horizontal composition.</p>
-    </div>
-  </div>
-</section>

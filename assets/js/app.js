@@ -1,110 +1,345 @@
 /**
- * Color Palette Studio — application/UI controller
- * Owns DOM events, preview state, rendering, copy/download interactions.
- * Palette math is in palette-engine.js; file serialization is in palette-exporters.js.
+ * Palette page controller.
+ *
+ * Owns DOM events, palette rendering, preview state, and browser interactions.
+ * Color math lives in palette-engine.js; file serialization lives in
+ * palette-exporters.js so both modules remain independently testable.
  */
+import { generate, normalizeHex, rgbToHsb } from './palette-engine.js';
+import {
+  assetContents,
+  kotlinExport,
+  paletteObject,
+  swiftExport,
+  xmlExport
+} from './palette-exporters.js';
+import { downloadElementScreenshot } from './preview-screenshots.js';
 
-import { generate, normalizeHex, hexToRgb, rgbToHsb } from "./palette-engine.js";
-import { paletteObject, xmlExport, kotlinExport, swiftExport, assetContents } from "./palette-exporters.js";
-import { downloadElementScreenshot } from "./preview-screenshots.js";
-
-/** Small UI state and DOM helpers. */
 const $ = id => document.getElementById(id);
-let current = null;
-let toastTimer;
+const DEFAULT_SEED = '#6750A4';
+const TOAST_DURATION_MS = 1700;
+const DOWNLOAD_URL_REVOKE_DELAY_MS = 1000;
+
+let currentPalette = null;
+let toastTimeoutId;
+
+/** Show a short, accessible status message without blocking the UI. */
 function toast(message) {
-  const element = $("toast");
+  const element = $('toast');
   if (!element) return;
+
   element.textContent = message;
-  element.classList.add("show");
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => element.classList.remove("show"), 1700);
+  element.classList.add('show');
+  clearTimeout(toastTimeoutId);
+  toastTimeoutId = setTimeout(() => element.classList.remove('show'), TOAST_DURATION_MS);
 }
 
-function readableText(hex){const {r,g,b}=hexToRgb(hex);const linear=[r,g,b].map(x=>{x/=255;return x<=.04045?x/12.92:Math.pow((x+.055)/1.055,2.4)});const lum=.2126*linear[0]+.7152*linear[1]+.0722*linear[2];return lum>.42?"#161616":"#FFFFFF"}
-function render(){
- if(!current)return;
- $("palette").innerHTML="";
- current.colors.forEach(({name,hex})=>{
-  const shade=name.replace("BrandPrimary","");
-  const card=document.createElement("div");card.className="swatch";card.title="Copy "+hex;card.style.cursor="pointer";card.addEventListener("click",()=>copy(hex));
-  const color=document.createElement("div");color.className="swatchcolor";color.style.background=hex;color.title="Copy "+hex;color.tabIndex=0;color.setAttribute("role","button");color.setAttribute("aria-label",`Copy ${name} ${hex}`);
-  color.addEventListener("click",()=>copy(hex));color.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();copy(hex)}});
-  const meta=document.createElement("div");meta.className="swatchmeta";
-  const nm=document.createElement("div");nm.className="swatchname";nm.textContent=name;
-  const hx=document.createElement("div");hx.className="swatchhex";hx.textContent=hex;
-  const values=rgbToHsb(hex);
-  const hsbLine=document.createElement("div");hsbLine.className="swatchhsb";
-  hsbLine.textContent=`H ${values.h.toFixed(1)}° · S ${values.s.toFixed(1)}% · B ${values.b.toFixed(1)}%`;
-  meta.append(nm,hx,hsbLine);if(shade==="600"){const tag=document.createElement("div");tag.className="seedtag";tag.textContent=current.mode==="fallback"?"Default 600":"SEED";meta.append(tag)}
-  card.append(color,meta);$("palette").append(card);
- });
- const get=n=>current.colors.find(c=>c.name==="BrandPrimary"+n).hex;
- const primary=get(600),c100=get(100),c200=get(200),c800=get(800),c900=get(900),c1000=get(1000);
- const phone=$("phonePreview"), lightMode=phone.dataset.mode!=="dark";
- const onPrimary=normalizeHex($(lightMode?"onPrimaryLightHex":"onPrimaryDarkHex").value);
- phone.style.setProperty("--mock-primary",primary);phone.style.setProperty("--on-primary",onPrimary);phone.style.setProperty("--promo-end",c800);
- if(lightMode){
-  phone.style.setProperty("--mock-bg",c100);phone.style.setProperty("--mock-text","#242424");phone.style.setProperty("--mock-surface","#FFFFFF");phone.style.setProperty("--mock-input","#E8E8E8");phone.style.setProperty("--mock-muted","#777777");phone.style.setProperty("--mock-outline",c200);phone.style.setProperty("--map-bg","#F2F3F3");phone.style.setProperty("--map-road","#FFFFFF");phone.style.setProperty("--map-road2","#D6D9DC");phone.style.setProperty("--map-water","#7AAAB5");phone.style.setProperty("--route",primary);
- }else{
-  phone.style.setProperty("--mock-bg",c1000);phone.style.setProperty("--mock-text","#F4F4F4");phone.style.setProperty("--mock-surface","#202020");phone.style.setProperty("--mock-input","#454545");phone.style.setProperty("--mock-muted","#BBBBBB");phone.style.setProperty("--mock-outline",c900);phone.style.setProperty("--map-bg","#383B43");phone.style.setProperty("--map-road","#252830");phone.style.setProperty("--map-road2","#555A64");phone.style.setProperty("--map-water","#4C6676");phone.style.setProperty("--route",primary);
- }
- $("lightModeBtn").classList.toggle("active",lightMode);$("darkModeBtn").classList.toggle("active",!lightMode);
- $("lightModeBtn").setAttribute("aria-pressed",String(lightMode));$("darkModeBtn").setAttribute("aria-pressed",String(!lightMode));
- const h=current.hsb;
- $("status").innerHTML=`<strong>${current.mode==="fallback"?"Default palette selected":"Custom palette generated"}</strong><br>HSB: H ${h.h.toFixed(1)}° · S ${h.s.toFixed(1)}% · B ${h.b.toFixed(1)}%<br>${current.reason}`;
+/**
+ * Render palette swatches and apply the current palette to the mobile preview.
+ * The mobile preview uses CSS custom properties so its layout remains in CSS.
+ */
+function renderPalette() {
+  if (!currentPalette) return;
+
+  const paletteContainer = $('palette');
+  paletteContainer.replaceChildren();
+
+  currentPalette.colors.forEach(({ name, hex }) => {
+    const shade = name.replace('BrandPrimary', '');
+    const card = document.createElement('div');
+    card.className = 'swatch';
+    card.title = `Copy ${hex}`;
+    card.addEventListener('click', () => copyText(hex));
+
+    const color = document.createElement('div');
+    color.className = 'swatchcolor';
+    color.style.background = hex;
+    color.title = `Copy ${hex}`;
+    color.tabIndex = 0;
+    color.setAttribute('role', 'button');
+    color.setAttribute('aria-label', `Copy ${name} ${hex}`);
+    color.addEventListener('click', () => copyText(hex));
+    color.addEventListener('keydown', event => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      copyText(hex);
+    });
+
+    const metadata = document.createElement('div');
+    metadata.className = 'swatchmeta';
+
+    const nameElement = document.createElement('div');
+    nameElement.className = 'swatchname';
+    nameElement.textContent = name;
+
+    const hexElement = document.createElement('div');
+    hexElement.className = 'swatchhex';
+    hexElement.textContent = hex;
+
+    const hsb = rgbToHsb(hex);
+    const hsbElement = document.createElement('div');
+    hsbElement.className = 'swatchhsb';
+    hsbElement.textContent = `H ${hsb.h.toFixed(1)}° · S ${hsb.s.toFixed(1)}% · B ${hsb.b.toFixed(1)}%`;
+
+    metadata.append(nameElement, hexElement, hsbElement);
+
+    if (shade === '600') {
+      const seedTag = document.createElement('div');
+      seedTag.className = 'seedtag';
+      seedTag.textContent = currentPalette.mode === 'fallback' ? 'Default 600' : 'SEED';
+      metadata.append(seedTag);
+    }
+
+    card.append(color, metadata);
+    paletteContainer.append(card);
+  });
+
+  const getShade = shade => currentPalette.colors.find(color =>
+    color.name === `BrandPrimary${shade}`
+  ).hex;
+
+  const primary = getShade(600);
+  const lightBackground = getShade(100);
+  const lightOutline = getShade(200);
+  const promoEnd = getShade(800);
+  const darkOutline = getShade(900);
+  const darkBackground = getShade(1000);
+  const phone = $('phonePreview');
+  const isLightMode = phone.dataset.mode !== 'dark';
+  const onPrimary = normalizeHex($(isLightMode ? 'onPrimaryLightHex' : 'onPrimaryDarkHex').value);
+
+  phone.style.setProperty('--mock-primary', primary);
+  phone.style.setProperty('--on-primary', onPrimary);
+  phone.style.setProperty('--promo-end', promoEnd);
+
+  // Keep the phone mockup's neutral surfaces distinct from the website theme.
+  const previewTokens = isLightMode
+    ? {
+        '--mock-bg': lightBackground,
+        '--mock-text': '#242424',
+        '--mock-surface': '#FFFFFF',
+        '--mock-input': '#E8E8E8',
+        '--mock-muted': '#777777',
+        '--mock-outline': lightOutline,
+        '--map-bg': '#F2F3F3',
+        '--map-road': '#FFFFFF',
+        '--map-road2': '#D6D9DC',
+        '--map-water': '#7AAAB5'
+      }
+    : {
+        '--mock-bg': darkBackground,
+        '--mock-text': '#F4F4F4',
+        '--mock-surface': '#202020',
+        '--mock-input': '#454545',
+        '--mock-muted': '#BBBBBB',
+        '--mock-outline': darkOutline,
+        '--map-bg': '#383B43',
+        '--map-road': '#252830',
+        '--map-road2': '#555A64',
+        '--map-water': '#4C6676'
+      };
+
+  Object.entries(previewTokens).forEach(([property, value]) => {
+    phone.style.setProperty(property, value);
+  });
+  phone.style.setProperty('--route', primary);
+
+  $('lightModeBtn').classList.toggle('active', isLightMode);
+  $('darkModeBtn').classList.toggle('active', !isLightMode);
+  $('lightModeBtn').setAttribute('aria-pressed', String(isLightMode));
+  $('darkModeBtn').setAttribute('aria-pressed', String(!isLightMode));
+
+  const { h, s, b } = currentPalette.hsb;
+  const heading = currentPalette.mode === 'fallback'
+    ? 'Default palette selected'
+    : 'Custom palette generated';
+  $('status').innerHTML = `<strong>${heading}</strong><br>HSB: H ${h.toFixed(1)}° · S ${s.toFixed(1)}% · B ${b.toFixed(1)}%<br>${currentPalette.reason}`;
 }
-function generateFromInput(){
- try{
-  const hex=normalizeHex($("seedHex").value);$("seedHex").value=hex;$("seedPicker").value=hex;
-  current=generate(hex,Number($("threshold").value));render();
- }catch(e){$("seedHex").setAttribute("aria-invalid","true");toast(e.message)}
+
+/** Validate the seed field, generate a palette, and refresh all dependent UI. */
+function generateFromInput() {
+  try {
+    const seed = normalizeHex($('seedHex').value);
+    $('seedHex').value = seed;
+    $('seedPicker').value = seed;
+    $('seedHex').removeAttribute('aria-invalid');
+
+    currentPalette = generate(seed, Number($('threshold').value));
+    renderPalette();
+  } catch (error) {
+    $('seedHex').setAttribute('aria-invalid', 'true');
+    toast(error.message || 'Could not generate a palette.');
+  }
 }
-async function copy(text){try{await navigator.clipboard.writeText(text);toast("Copied "+text)}catch{const ta=document.createElement("textarea");ta.value=text;document.body.append(ta);ta.select();document.execCommand("copy");ta.remove();toast("Copied "+text)}}
-function download(filename,content,type="text/plain;charset=utf-8"){const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
-function downloadIosAssets(){
- // Emit each Xcode colorset JSON individually; browser download is one file at a time.
- // ZIP support is intentionally deferred rather than shipping a hidden dependency.
- const data=current.colors.map(c=>({name:c.name,contents:assetContents(c.hex)}));
- data.forEach((c,i)=>setTimeout(()=>download(`${c.name}.colorset-Contents.json`,c.contents,"application/json"),i*120));
- toast("Downloading 10 Asset Catalog JSON files. Place each JSON in its matching .colorset folder.");
+
+/** Copy text using the Clipboard API, with a legacy fallback when unavailable. */
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    toast(`Copied ${text}`);
+  } catch {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.append(textarea);
+    textarea.select();
+
+    const copied = document.execCommand('copy');
+    textarea.remove();
+    toast(copied ? `Copied ${text}` : 'Clipboard access is unavailable in this browser.');
+  }
 }
-document.querySelectorAll("[data-export]").forEach(btn=>btn.addEventListener("click",()=>{
- if(!current)return;
- const kind=btn.dataset.export;
- if(kind==="json")download("brand-primary-palette.json",JSON.stringify(paletteObject(current, $("seedHex").value),null,2)+"\\n","application/json");
- if(kind==="xml")download("colors.xml",xmlExport(current),"application/xml");
- if(kind==="kotlin")download("BrandPrimary.kt",kotlinExport(current),"text/plain");
- if(kind==="swift")download("BrandPrimary.swift",swiftExport(current),"text/plain");
- if(kind==="ios")downloadIosAssets();
-}));
-function bindColorPair(pickerId,hexId){
- const picker=$(pickerId),input=$(hexId);
- picker.addEventListener("input",()=>{input.value=picker.value.toUpperCase();render()});
- input.addEventListener("change",()=>{try{const v=normalizeHex(input.value);input.value=v;picker.value=v;input.removeAttribute("aria-invalid");render()}catch(e){input.setAttribute("aria-invalid","true");toast("Enter a valid 6-digit HEX color")}});
+
+/** Download text content as a browser-generated file. */
+function downloadTextFile(filename, content, mimeType = 'text/plain;charset=utf-8') {
+  const blob = new Blob([content], { type: mimeType });
+  const objectUrl = URL.createObjectURL(blob);
+  const anchor = document.createElement('a');
+  anchor.href = objectUrl;
+  anchor.download = filename;
+  document.body.append(anchor);
+  anchor.click();
+  anchor.remove();
+  setTimeout(() => URL.revokeObjectURL(objectUrl), DOWNLOAD_URL_REVOKE_DELAY_MS);
 }
-bindColorPair("onPrimaryLightPicker","onPrimaryLightHex");
-bindColorPair("onPrimaryDarkPicker","onPrimaryDarkHex");
-$("lightModeBtn").addEventListener("click",()=>{$("phonePreview").dataset.mode="light";render()});
-$("darkModeBtn").addEventListener("click",()=>{$("phonePreview").dataset.mode="dark";render()});
-document.querySelectorAll(".screen-toggle [data-screen]").forEach(btn=>btn.addEventListener("click",()=>{
- const screen=btn.dataset.screen;
- $("phonePreview").dataset.screen=screen;
- document.querySelectorAll(".screen-toggle [data-screen]").forEach(b=>{
-   const selected=b.dataset.screen===screen;
-   b.classList.toggle("active",selected);
-   b.setAttribute("aria-pressed",String(selected));
- });
-}));
-$("generateBtn").addEventListener("click",generateFromInput);
-$("seedPicker").addEventListener("input",e=>{$("seedHex").value=e.target.value.toUpperCase();generateFromInput()});
-$("seedHex").addEventListener("keydown",e=>{if(e.key==="Enter")generateFromInput()});
-$("seedHex").addEventListener("input",()=>{$("seedHex").removeAttribute("aria-invalid")});
-$("threshold").addEventListener("change",generateFromInput);
-$("resetBtn").addEventListener("click",()=>{$("seedHex").value="#6750A4";$("seedPicker").value="#6750A4";$("threshold").value="20";generateFromInput()});
-$("copyAllBtn").addEventListener("click",()=>copy(current.colors.map(c=>`${c.name}: ${c.hex}`).join("\n")));
-$("downloadHomePreviewScreenshot")?.addEventListener("click", async () => {
- try { await downloadElementScreenshot($("phonePreview"), "blueline-home-preview.png"); toast("Home preview screenshot downloaded"); }
- catch (error) { toast(error.message || "Could not capture the preview"); }
+
+/** Download one Xcode color asset JSON payload for each generated shade. */
+function downloadIosAssets() {
+  if (!currentPalette) return;
+
+  // Browser downloads are initiated one at a time to avoid dropping rapid clicks.
+  const files = currentPalette.colors.map(color => ({
+    filename: `${color.name}.colorset-Contents.json`,
+    content: assetContents(color.hex)
+  }));
+
+  files.forEach((file, index) => {
+    setTimeout(() => downloadTextFile(file.filename, file.content, 'application/json'), index * 120);
+  });
+
+  toast('Downloading 10 Asset Catalog JSON files. Place each JSON in its matching .colorset folder.');
+}
+
+/** Route each export button to the matching pure serializer. */
+document.querySelectorAll('[data-export]').forEach(button => {
+  button.addEventListener('click', () => {
+    if (!currentPalette) return;
+
+    switch (button.dataset.export) {
+      case 'json':
+        downloadTextFile(
+          'brand-primary-palette.json',
+          `${JSON.stringify(paletteObject(currentPalette, $('seedHex').value), null, 2)}\n`,
+          'application/json'
+        );
+        break;
+      case 'xml':
+        downloadTextFile('colors.xml', xmlExport(currentPalette), 'application/xml');
+        break;
+      case 'kotlin':
+        downloadTextFile('BrandPrimary.kt', kotlinExport(currentPalette));
+        break;
+      case 'swift':
+        downloadTextFile('BrandPrimary.swift', swiftExport(currentPalette));
+        break;
+      case 'ios':
+        downloadIosAssets();
+        break;
+      default:
+        console.warn(`Unsupported palette export: ${button.dataset.export}`);
+    }
+  });
 });
+
+/** Keep a color picker and its hexadecimal input synchronized. */
+function bindColorPair(pickerId, hexId) {
+  const picker = $(pickerId);
+  const input = $(hexId);
+
+  picker.addEventListener('input', () => {
+    input.value = picker.value.toUpperCase();
+    input.removeAttribute('aria-invalid');
+    renderPalette();
+  });
+
+  input.addEventListener('change', () => {
+    try {
+      const value = normalizeHex(input.value);
+      input.value = value;
+      picker.value = value;
+      input.removeAttribute('aria-invalid');
+      renderPalette();
+    } catch {
+      input.setAttribute('aria-invalid', 'true');
+      toast('Enter a valid six-digit HEX color.');
+    }
+  });
+}
+
+/* -------------------------------------------------------------------------- */
+/* Initial page event bindings                                                 */
+/* -------------------------------------------------------------------------- */
+bindColorPair('onPrimaryLightPicker', 'onPrimaryLightHex');
+bindColorPair('onPrimaryDarkPicker', 'onPrimaryDarkHex');
+
+$('lightModeBtn').addEventListener('click', () => {
+  $('phonePreview').dataset.mode = 'light';
+  renderPalette();
+});
+
+$('darkModeBtn').addEventListener('click', () => {
+  $('phonePreview').dataset.mode = 'dark';
+  renderPalette();
+});
+
+document.querySelectorAll('.screen-toggle [data-screen]').forEach(button => {
+  button.addEventListener('click', () => {
+    const screen = button.dataset.screen;
+    $('phonePreview').dataset.screen = screen;
+
+    document.querySelectorAll('.screen-toggle [data-screen]').forEach(tab => {
+      const selected = tab.dataset.screen === screen;
+      tab.classList.toggle('active', selected);
+      tab.setAttribute('aria-pressed', String(selected));
+    });
+  });
+});
+
+$('generateBtn').addEventListener('click', generateFromInput);
+$('seedPicker').addEventListener('input', event => {
+  $('seedHex').value = event.target.value.toUpperCase();
+  generateFromInput();
+});
+$('seedHex').addEventListener('keydown', event => {
+  if (event.key === 'Enter') generateFromInput();
+});
+$('seedHex').addEventListener('input', () => $('seedHex').removeAttribute('aria-invalid'));
+$('threshold').addEventListener('change', generateFromInput);
+
+$('resetBtn').addEventListener('click', () => {
+  $('seedHex').value = DEFAULT_SEED;
+  $('seedPicker').value = DEFAULT_SEED;
+  $('threshold').value = '20';
+  generateFromInput();
+});
+
+$('copyAllBtn').addEventListener('click', () => {
+  if (!currentPalette) return;
+  copyText(currentPalette.colors.map(color => `${color.name}: ${color.hex}`).join('\n'));
+});
+
+$('downloadHomePreviewScreenshot')?.addEventListener('click', async () => {
+  try {
+    const result = await downloadElementScreenshot($('phonePreview'), 'blueline-home-preview.png');
+    toast(result?.clipboardCopied
+      ? 'Home preview downloaded and copied to clipboard'
+      : 'Home preview downloaded; clipboard copy is unavailable in this browser');
+  } catch (error) {
+    toast(error.message || 'Could not capture the preview.');
+  }
+});
+
+// Initialize the page with the documented default seed.
 generateFromInput();

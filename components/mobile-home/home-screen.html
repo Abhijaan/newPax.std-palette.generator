@@ -1,13 +1,134 @@
 <!-- Blueline Taxis Home mobile preview component. Loaded by assets/js/bootstrap.js. -->
-<div class="phone-heading"><div><h2 style="margin:0">Mobile UI preview</h2><p style="font-size:13px">Blueline Taxis · Mobile screen preview</p><button type="button" class="btn preview-screenshot-btn" id="downloadHomePreviewScreenshot">Download preview screenshot</button></div><div class="mode-toggle" role="group" aria-label="Preview theme"><button id="lightModeBtn" class="active" aria-pressed="true"><span class="material-symbols-rounded">light_mode</span> Light</button><button id="darkModeBtn" aria-pressed="false"><span class="material-symbols-rounded">dark_mode</span> Dark</button></div></div>
-      <div class="screen-selector-wrap" aria-label="Choose preview screen">
-        <span class="screen-selector-label">PREVIEW SCREEN</span>
-        <!-- Future screen buttons can be added here when a new preview is ready. -->
-          <div class="screen-toggle" role="group" aria-label="Mobile screen">
-          <button type="button" data-screen="home" class="active" aria-pressed="true"><span class="material-symbols-rounded">home</span> Home</button>
-          </div>
-      </div>
-      <div class="phone" id="phonePreview" data-mode="light" data-screen="home">
-        <div class="mock-map"><div class="map-grid"></div><div class="map-water"></div><div class="map-route"></div><div class="phone-status"><span>4:03 ◈</span><span>● ▰ ▴</span></div><div class="mock-menu"><span class="material-symbols-rounded">menu</span></div><div class="mock-top-pill"><span class="material-symbols-rounded">local_fire_department</span> 100</div><div class="map-pin"><small>3 MIN</small>Pickup</div></div>
-        <div class="mock-sheet"><div class="mock-search"><span class="material-symbols-rounded">search</span><span>Where to?</span><span class="schedule"><span class="material-symbols-rounded">calendar_month</span> Schedule</span></div><div class="mock-label">Quick Booking Stops</div><div class="quick-row"><div class="quick-item"><div class="quick-circle alt"><span class="material-symbols-rounded">flight</span></div>Airport</div><div class="quick-item"><div class="quick-circle"><span class="material-symbols-rounded">home</span></div>Home</div><div class="quick-item"><div class="quick-circle neutral"><span class="material-symbols-rounded">add</span></div>Add</div></div><div class="mock-label">Promotions</div><div class="promo-row"><div class="promo">CARLISLE TAXIS</div><div class="promo alt">GREY STREET HOTEL</div></div></div>
+<div class="phone-heading">
+ <div>
+  <h2 class="phone-heading-title">
+   Mobile UI preview
+  </h2>
+  <p class="phone-heading-description">
+   Blueline Taxis &middot; Mobile screen preview
+  </p>
+  <button class="btn preview-screenshot-btn" id="downloadHomePreviewScreenshot" type="button">
+   Download preview screenshot
+  </button>
+ </div>
+ <div aria-label="Preview theme" class="mode-toggle" role="group">
+  <button aria-pressed="true" class="active" id="lightModeBtn">
+   <span class="material-symbols-rounded">
+    light_mode
+   </span>
+   Light
+  </button>
+  <button aria-pressed="false" id="darkModeBtn">
+   <span class="material-symbols-rounded">
+    dark_mode
+   </span>
+   Dark
+  </button>
+ </div>
 </div>
+<div aria-label="Choose preview screen" class="screen-selector-wrap">
+ <span class="screen-selector-label">
+  PREVIEW SCREEN
+ </span>
+ <!-- Future screen buttons can be added here when a new preview is ready. -->
+ <div aria-label="Mobile screen" class="screen-toggle" role="group">
+  <button aria-pressed="true" class="active" data-screen="home" type="button">
+   <span class="material-symbols-rounded">
+    home
+   </span>
+   Home
+  </button>
+ </div>
+</div>
+<div class="phone" data-mode="light" data-screen="home" id="phonePreview">
+ <div class="mock-map">
+  <div class="map-grid">
+  </div>
+  <div class="map-water">
+  </div>
+  <div class="map-route">
+  </div>
+  <div class="phone-status">
+   <span>
+    4:03 ◈
+   </span>
+   <span>
+    ● ▰ &utrif;
+   </span>
+  </div>
+  <div class="mock-menu">
+   <span class="material-symbols-rounded">
+    menu
+   </span>
+  </div>
+  <div class="mock-top-pill">
+   <span class="material-symbols-rounded">
+    local_fire_department
+   </span>
+   100
+  </div>
+  <div class="map-pin">
+   <small>
+    3 MIN
+   </small>
+   Pickup
+  </div>
+ </div>
+ <div class="mock-sheet">
+  <div class="mock-search">
+   <span class="material-symbols-rounded">
+    search
+   </span>
+   <span>
+    Where to?
+   </span>
+   <span class="schedule">
+    <span class="material-symbols-rounded">
+     calendar_month
+    </span>
+    Schedule
+   </span>
+  </div>
+  <div class="mock-label">
+   Quick Booking Stops
+  </div>
+  <div class="quick-row">
+   <div class="quick-item">
+    <div class="quick-circle alt">
+     <span class="material-symbols-rounded">
+      flight
+     </span>
+    </div>
+    Airport
+   </div>
+   <div class="quick-item">
+    <div class="quick-circle">
+     <span class="material-symbols-rounded">
+      home
+     </span>
+    </div>
+    Home
+   </div>
+   <div class="quick-item">
+    <div class="quick-circle neutral">
+     <span class="material-symbols-rounded">
+      add
+     </span>
+    </div>
+    Add
+   </div>
+  </div>
+  <div class="mock-label">
+   Promotions
+  </div>
+  <div class="promo-row">
+   <div class="promo">
+    CARLISLE TAXIS
+   </div>
+   <div class="promo alt">
+    GREY STREET HOTEL
+   </div>
+  </div>
+ </div>
+</div>
+

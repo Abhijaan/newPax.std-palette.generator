@@ -26,3 +26,13 @@
     margin-inline: auto;
   }
 }
+
+/* Typography for the mobile preview heading; keep presentation out of the markup. */
+.phone-heading-title {
+  margin: 0;
+}
+
+.phone-heading-description {
+  font-size: 13px;
+}
+

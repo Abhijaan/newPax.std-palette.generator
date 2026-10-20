@@ -1,92 +1,753 @@
 <div class="asset-page">
-  <div class="asset-intro">
-    <div><div class="eyebrow">DESIGN-TO-ENGINEERING HANDOFF</div><h2>Image Asset Studio</h2><p>Prepare SVG icons for mobile teams, preview platform-safe sizing, and export vector or raster assets.</p></div>
-    <span class="asset-local-pill">Runs locally in your browser</span>
+ <div class="asset-intro">
+  <div>
+   <div class="eyebrow">
+    DESIGN-TO-ENGINEERING HANDOFF
+   </div>
+   <h2>
+    Image Asset Studio
+   </h2>
+   <p>
+    Prepare SVG icons for mobile teams, preview platform-safe sizing, and export vector or raster assets.
+   </p>
   </div>
-
-  <div class="asset-platform-tabs" role="tablist" aria-label="Target platform">
-    <button class="asset-platform-tab active" role="tab" aria-selected="true" aria-controls="androidAssetsPanel" data-platform="androidAssetsPanel">Android</button>
-    <button class="asset-platform-tab" role="tab" aria-selected="false" aria-controls="iosAssetsPanel" data-platform="iosAssetsPanel">iOS <span class="asset-coming-soon">Coming later</span></button>
+  <span class="asset-local-pill">
+   Runs locally in your browser
+  </span>
+ </div>
+ <!-- Platform tabs control which asset workflow is visible. -->
+ <div aria-label="Target platform" class="asset-platform-tabs" role="tablist">
+  <button aria-controls="androidAssetsPanel" aria-selected="true" class="asset-platform-tab active" data-platform="androidAssetsPanel" role="tab">
+   Android
+  </button>
+  <button aria-controls="iosAssetsPanel" aria-selected="false" class="asset-platform-tab" data-platform="iosAssetsPanel" role="tab">
+   iOS
+   <span class="asset-coming-soon">
+    Coming later
+   </span>
+  </button>
+ </div>
+ <!-- Android source and output controls. -->
+ <section class="asset-platform-panel active" id="androidAssetsPanel" role="tabpanel">
+  <section class="panel asset-import-panel">
+   <div>
+    <h3>
+     Start with your SVG
+    </h3>
+    <p>
+     One source icon powers both Android outputs below. Changes to the SVG editor update both previews.
+    </p>
+   </div>
+   <div class="asset-import-grid">
+    <label class="asset-dropzone" for="svgFileInput" id="svgDropzone">
+     <span class="material-symbols-rounded asset-upload-icon">
+      upload_file
+     </span>
+     <strong>
+      Choose an SVG file
+     </strong>
+     <span>
+      or drop it here
+     </span>
+     <small>
+      SVG format only
+     </small>
+    </label>
+    <div class="asset-source-wrap">
+     <label class="fieldlabel" for="svgSourceInput">
+      SVG source editor
+     </label>
+     <textarea class="asset-code-input" id="svgSourceInput" placeholder="Paste SVG markup here..." rows="8" spellcheck="false"></textarea>
+     <div class="asset-actions">
+      <button class="btn primary" id="loadSvgBtn">
+       Apply SVG
+      </button>
+      <button class="btn" id="clearSvgBtn">
+       Clear
+      </button>
+     </div>
+    </div>
+   </div>
+   <input accept=".svg,image/svg+xml" hidden="" id="svgFileInput" type="file"/>
+   <div aria-live="polite" class="asset-message" id="assetStatus" role="status">
+    Add an SVG to begin.
+   </div>
+  </section>
+  <div class="asset-section-heading">
+   <div>
+    <div class="eyebrow">
+     ANDROID OUTPUT 01
+    </div>
+    <h3>
+     Splash screen icon
+    </h3>
+    <p>
+     Preview the icon canvas and the circular safe area used by the Android SplashScreen API.
+    </p>
+   </div>
+   <span class="asset-spec-chip">
+    288 &times; 288 dp &middot; no icon background
+   </span>
   </div>
-
-  <section id="androidAssetsPanel" class="asset-platform-panel active" role="tabpanel">
-    <section class="panel asset-import-panel">
-      <div><h3>Start with your SVG</h3><p>One source icon powers both Android outputs below. Changes to the SVG editor update both previews.</p></div>
-      <div class="asset-import-grid">
-        <label class="asset-dropzone" for="svgFileInput" id="svgDropzone"><span class="material-symbols-rounded asset-upload-icon">upload_file</span><strong>Choose an SVG file</strong><span>or drop it here</span><small>SVG format only</small></label>
-        <div class="asset-source-wrap"><label class="fieldlabel" for="svgSourceInput">SVG source editor</label><textarea id="svgSourceInput" class="asset-code-input" spellcheck="false" rows="8" placeholder="Paste SVG markup here..."></textarea><div class="asset-actions"><button class="btn primary" id="loadSvgBtn">Apply SVG</button><button class="btn" id="clearSvgBtn">Clear</button></div></div>
+  <section class="panel asset-output-card">
+   <div class="asset-splash-grid">
+    <div class="asset-settings">
+     <h4>
+      Customize splash icon
+     </h4>
+     <div class="asset-local-editor" data-editor="splash">
+      <div class="asset-local-editor-head">
+       <strong>
+        SVG cleanup
+       </strong>
+       <span>
+        For splash only
+       </span>
       </div>
-      <input type="file" id="svgFileInput" accept=".svg,image/svg+xml" hidden>
-      <div class="asset-message" id="assetStatus" role="status" aria-live="polite">Add an SVG to begin.</div>
-
-    </section>
-
-    <div class="asset-section-heading"><div><div class="eyebrow">ANDROID OUTPUT 01</div><h3>Splash screen icon</h3><p>Preview the icon canvas and the circular safe area used by the Android SplashScreen API.</p></div><span class="asset-spec-chip">288 × 288 dp · no icon background</span></div>
-    <section class="panel asset-output-card">
-      <div class="asset-splash-grid">
-        <div class="asset-settings">
-          <h4>Customize splash icon</h4>
-          <div class="asset-local-editor" data-editor="splash">
-            <div class="asset-local-editor-head"><strong>SVG cleanup</strong><span>For splash only</span></div>
-            <div class="asset-local-detect"><div><b>Auto-detect background</b><small>Find and remove a likely full-canvas shape.</small></div><button class="btn" id="splashDetectBtn" disabled>Detect &amp; remove</button></div>
-            <div class="asset-local-delete"><label class="fieldlabel" for="splashElementSelect">Select element <span class="asset-count-pill" id="splashElementCount">0</span></label><select id="splashElementSelect" class="asset-select" disabled><option>Load SVG first</option></select><button class="btn danger" id="splashDeleteBtn" disabled>Delete selected</button></div>
-            <div class="asset-local-recovery"><button class="btn" id="splashUndoBtn" disabled>↶ Undo</button><button class="btn" id="splashRestoreBtn" disabled>Restore original</button></div>
-            <small class="asset-local-hint">Selecting an element highlights it in this preview. Deletion affects the shared source SVG.</small>
-          </div>
-          <label class="asset-check"><input type="checkbox" id="splashIncludeBackground"><span><strong>Use icon background</strong><small>When enabled, preview switches to the 240 × 240 dp icon spec and 160 dp safe circle.</small></span></label>
-          <div class="asset-color-row"><label class="fieldlabel" for="splashBackgroundColor">Icon background color</label><div><input type="color" id="splashBackgroundColor" value="#FFFFFF"><input type="text" id="splashBackgroundHex" value="#FFFFFF" maxlength="7" aria-label="Splash icon background hex"></div></div>
-          <label class="fieldlabel" for="splashPadding">Canvas breathing room <strong id="splashPaddingValue">0%</strong></label><input class="asset-range" type="range" id="splashPadding" min="0" max="40" value="0"><div class="asset-range-labels"><span>Tighter frame</span><span>More room</span></div><label class="fieldlabel" for="splashScale">Artwork scale <strong id="splashScaleValue">100%</strong></label><input class="asset-range" type="range" id="splashScale" min="25" max="250" value="100"><div class="asset-range-labels"><span>25% smaller</span><span>250% · can extend beyond frame</span></div>
-          <div class="asset-position-controls" data-position="splash"><label class="fieldlabel">Move artwork <span>Use arrows for fine adjustments</span></label><div class="asset-position-row"><button type="button" class="btn asset-arrow" data-move="up" aria-label="Move artwork up">↑</button><button type="button" class="btn asset-arrow" data-move="left" aria-label="Move artwork left">←</button><button type="button" class="btn asset-arrow" data-move="down" aria-label="Move artwork down">↓</button><button type="button" class="btn asset-arrow" data-move="right" aria-label="Move artwork right">→</button><button type="button" class="btn" data-reset-position>Center</button></div><div class="asset-offset-readout" id="splashOffsetReadout">X 0 · Y 0</div></div>
-          <div class="asset-size-row"><div><label class="fieldlabel">Export dimensions</label><div class="asset-fixed-size" id="splashExportDimensions">288 × 288 px</div><small class="asset-field-hint">Base size follows Android guidelines</small></div><div><label class="fieldlabel" for="splashExportFormat">Format</label><select id="splashExportFormat" class="asset-select"><option value="svg" selected>SVG</option><option value="png">PNG</option></select></div></div><div class="asset-png-resolution" id="splashPngResolutionWrap" hidden><label class="fieldlabel" for="splashPngResolution">PNG resolution</label><select id="splashPngResolution" class="asset-select"><option value="1">1× · guideline base size</option><option value="2">2× · double resolution</option><option value="3">3× · triple resolution</option><option value="custom">Custom dimensions…</option></select><div id="splashPngCustomWrap" hidden><label class="fieldlabel" for="splashPngCustomSize">Custom size (px)</label><input id="splashPngCustomSize" class="asset-number" type="number" min="1" max="4096" step="1" value="576"></div></div>
-          <button class="btn primary asset-download-btn" id="downloadSplashBtn" disabled>Download splash asset</button>
-        </div>
-        <div class="asset-live-preview">
-          <div class="asset-preview-title"><h4>Platform size preview</h4><div class="asset-preview-actions"><span id="splashPreviewDimensions">288 × 288 dp</span><button type="button" class="btn preview-screenshot-btn" id="downloadSplashPreviewScreenshot" disabled>Screenshot</button></div></div>
-          <div class="asset-splash-device checkerboard" id="splashWindowPreview"><div class="asset-splash-canvas checkerboard" id="splashCanvas" tabindex="0" role="application" aria-label="Splash icon canvas. Use arrow keys to move artwork."><div class="asset-safe-circle" id="splashSafeCircle"></div><img id="splashPreviewImage" alt="Android splash icon preview" hidden><span id="splashEmpty" class="asset-preview-empty">Your icon appears here</span></div></div>
-          <div class="asset-legend"><span><i class="legend-canvas"></i>Full icon canvas</span><span><i class="legend-safe"></i>Safe circular area</span></div>
-          <p class="asset-preview-caption">The dotted circle is a visual safe-area guide; keep important artwork inside it because the outer area can be masked or cropped.</p>
-        </div>
+      <div class="asset-local-detect">
+       <div>
+        <b>
+         Auto-detect background
+        </b>
+        <small>
+         Find and remove a likely full-canvas shape.
+        </small>
+       </div>
+       <button class="btn" disabled="" id="splashDetectBtn">
+        Detect &amp; remove
+       </button>
       </div>
-      <div class="asset-guidelines"><h4>Android SplashScreen API reference</h4><div class="asset-guideline-grid"><div><strong>Without icon background</strong><b>288 × 288 dp</b><span>Keep artwork inside a 192 dp diameter circle.</span></div><div><strong>With icon background</strong><b>240 × 240 dp</b><span>Keep artwork inside a 160 dp diameter circle.</span></div><div><strong>Branded image</strong><b>200 × 80 dp</b><span>A separate option for brand artwork, not the app icon.</span></div></div><p>These are Android's documented dp specifications, not a guarantee that an arbitrary SVG will be a valid Android VectorDrawable. For Android implementation, export/use a compatible vector drawable or convert and test the asset in your project. <a href="https://developer.android.com/develop/ui/views/launch/splash-screen" target="_blank" rel="noreferrer">Official Android splash screen guidelines ↗</a></p></div>
-    </section>
-
-    <div class="asset-section-heading"><div><div class="eyebrow">ANDROID OUTPUT 02</div><h3>Brand icon</h3><p>Fit your logo or icon inside a square frame, adjust its background and padding, and export it for other UI use cases.</p></div><span class="asset-spec-chip">200 × 200 px fixed canvas · PNG export</span></div>
-    <section class="panel asset-output-card">
-      <div class="asset-brand-grid">
-        <div class="asset-settings">
-          <h4>Brand icon settings</h4>
-          <div class="asset-brand-source panel-subsection">
-            <div class="asset-local-editor-head"><strong>Artwork source</strong><span id="brandSourceModeLabel">Using shared Splash SVG</span></div>
-            <p class="asset-field-hint">By default this uses the shared SVG above. Choose a separate SVG or PNG to edit the Brand Icon independently.</p>
-            <div class="asset-actions"><button type="button" class="btn" id="chooseBrandSourceBtn">Choose own SVG / PNG</button><button type="button" class="btn" id="useSharedBrandSourceBtn" disabled>Use shared SVG</button></div>
-            <input type="file" id="brandSourceFileInput" accept=".svg,.png,image/svg+xml,image/png" hidden>
-          </div>
-          <div class="asset-local-editor" data-editor="brand-raster">
-            <div class="asset-local-editor-head"><strong>PNG editing</strong><span>SVG is rasterized first</span></div>
-            <div class="asset-local-detect"><div><b>Remove background</b><small>Removes connected pixels similar to the canvas corners.</small></div><button class="btn" id="brandRasterDetectBtn" disabled>Detect &amp; remove</button></div>
-            <label class="fieldlabel" for="brandRasterTolerance">Color tolerance <strong id="brandRasterToleranceValue">24</strong></label><input class="asset-range" type="range" id="brandRasterTolerance" min="0" max="100" value="24">
-            <div class="asset-local-delete"><label class="fieldlabel">Manual removal</label><small class="asset-field-hint">Click a background area in the preview to remove connected pixels of a similar color.</small><button class="btn danger" id="brandRasterUndoBtn" disabled>Undo raster edit</button><button class="btn" id="brandRasterRestoreBtn" disabled>Restore converted PNG</button></div>
-          </div>
-          <label class="asset-check"><input type="checkbox" id="brandIncludeBackground"><span><strong>Include background</strong><small>Toggle a solid background behind the icon.</small></span></label>
-          <div class="asset-color-row asset-brand-color-row"><label class="fieldlabel" for="brandPaletteColor">Brand background</label><div><select id="brandPaletteColor" class="asset-select" aria-label="Choose generated brand color"><option value="#FFFFFF">Custom / white</option></select><input type="color" id="brandBackgroundColor" value="#FFFFFF" aria-label="Custom brand background color"><input type="text" id="brandBackgroundHex" value="#FFFFFF" maxlength="7" aria-label="Brand icon background hex"></div></div>
-          <label class="fieldlabel" for="brandCornerRadius">Round corners <strong id="brandCornerRadiusValue">0%</strong></label><input class="asset-range" type="range" id="brandCornerRadius" min="0" max="50" value="0"><div class="asset-range-labels"><span>Square</span><span>Fully rounded</span></div>
-          <label class="fieldlabel" for="brandPadding">Content padding <strong id="brandPaddingValue">12%</strong></label><input class="asset-range" type="range" id="brandPadding" min="0" max="40" value="12"><div class="asset-range-labels"><span>Edge-to-edge</span><span>More breathing room</span></div>
-          <label class="fieldlabel" for="brandScale">Artwork scale <strong id="brandScaleValue">100%</strong></label><input class="asset-range" type="range" id="brandScale" min="25" max="250" value="100"><div class="asset-position-controls" data-position="brand"><label class="fieldlabel">Move artwork <span>Use arrows for fine adjustments</span></label><div class="asset-position-row"><button type="button" class="btn asset-arrow" data-move="up" aria-label="Move artwork up">↑</button><button type="button" class="btn asset-arrow" data-move="left" aria-label="Move artwork left">←</button><button type="button" class="btn asset-arrow" data-move="down" aria-label="Move artwork down">↓</button><button type="button" class="btn asset-arrow" data-move="right" aria-label="Move artwork right">→</button><button type="button" class="btn" data-reset-position>Center</button></div><div class="asset-offset-readout" id="brandOffsetReadout">X 0 · Y 0</div></div>
-          <div class="asset-size-row"><div><label class="fieldlabel">Square canvas</label><div class="asset-fixed-size">200 × 200 px</div><small class="asset-field-hint">SVG uses the 200 × 200 viewBox</small></div><div><label class="fieldlabel" for="brandExportFormat">Format</label><select id="brandExportFormat" class="asset-select"><option value="png" selected>PNG</option></select></div></div><div class="asset-png-resolution" id="brandPngResolutionWrap"><label class="fieldlabel" for="brandPngResolution">PNG resolution</label><select id="brandPngResolution" class="asset-select"><option value="1">1× · 200 × 200 px</option><option value="2">2× · 400 × 400 px</option><option value="3">3× · 600 × 600 px</option><option value="4">4× · 800 × 800 px</option><option value="custom">Custom dimensions…</option></select><div id="brandPngCustomWrap" hidden><label class="fieldlabel" for="brandPngCustomSize">Custom size (px)</label><input id="brandPngCustomSize" class="asset-number" type="number" min="200" max="4096" step="1" value="1000"></div></div>
-          <button class="btn primary asset-download-btn" id="downloadBrandBtn" disabled>Download brand icon</button>
-          <p class="asset-footnote">Brand icon edits are applied to a rasterized PNG. Background removal works on connected pixels with similar colors; inspect the preview before exporting.</p>
-        </div>
-        <div class="asset-live-preview">
-          <div class="asset-preview-title"><h4>Brand icon preview</h4><div class="asset-preview-actions"><span id="brandPreviewDimensions">200 × 200 px</span><button type="button" class="btn preview-screenshot-btn" id="downloadBrandPreviewScreenshot" disabled>Screenshot</button></div></div>
-          <div class="asset-brand-stage checkerboard" id="brandPreviewStage"><div class="asset-brand-square" id="brandSquare" tabindex="0" role="application" aria-label="Brand icon canvas. Use arrow keys to move artwork."><img id="brandPreviewImage" alt="Brand icon preview" hidden><span id="brandEmpty" class="asset-preview-empty">Your icon appears here</span></div></div>
-          <div class="asset-preview-details"><div><span>Canvas</span><strong id="brandCanvasInfo">200 × 200 px</strong></div><div><span>Padding</span><strong id="brandPaddingInfo">12%</strong></div><div><span>Background</span><strong id="brandBackgroundInfo">Transparent</strong></div></div>
-          <div class="asset-android-preview-card"><div class="asset-preview-title"><h4>Android screen preview</h4><div class="asset-preview-actions"><span>Fixed reference layout</span><button type="button" class="btn preview-screenshot-btn" id="downloadWelcomePreviewScreenshot" disabled>Screenshot</button></div></div><div class="asset-phone-shell onboarding-phone"><div class="asset-phone-status"><span>2:19</span><span class="asset-status-icons"><i></i><i></i><i></i></span></div><div class="asset-phone-camera"></div><div class="asset-phone-screen" id="brandPhoneScreen"><div class="asset-phone-logo" id="brandPhoneIcon"><img id="brandPhoneImage" alt="Brand icon on Android welcome screen" hidden></div><div class="asset-phone-welcome-copy"><div class="asset-phone-welcome-title" id="brandWelcomeTitle">Welcome</div><div class="asset-phone-welcome-subtitle" id="brandWelcomeSubtitle">Enjoy a smoother, faster experience by booking your ride with WEBTAXI</div></div><button type="button" class="asset-phone-cta" id="brandWelcomeButton">Get Started</button><div class="asset-phone-navigation"><span class="nav-back"></span><span class="nav-home"></span><span class="nav-recents"></span></div></div></div><div class="asset-phone-controls"><label class="fieldlabel" for="brandPhoneBgSelect">Screen background</label><div class="asset-phone-color-controls"><select id="brandPhoneBgSelect" class="asset-select" aria-label="Choose a generated brand color"><option value="#F36D21">Brand orange · #F36D21</option></select><input type="color" id="brandPhoneBgCustom" value="#F36D21" aria-label="Choose custom screen background color"><input type="text" id="brandPhoneBgHex" class="asset-phone-hex" value="#F36D21" maxlength="7" spellcheck="false" aria-label="Custom screen background hex value" placeholder="#RRGGBB"></div><small class="asset-field-hint">Choose a palette shade or use the color picker / enter a hex value.</small></div></div>
-        </div>
+      <div class="asset-local-delete">
+       <label class="fieldlabel" for="splashElementSelect">
+        Select element
+        <span class="asset-count-pill" id="splashElementCount">
+         0
+        </span>
+       </label>
+       <select class="asset-select" disabled="" id="splashElementSelect">
+        <option>
+         Load SVG first
+        </option>
+       </select>
+       <button class="btn danger" disabled="" id="splashDeleteBtn">
+        Delete selected
+       </button>
       </div>
-    </section>
+      <div class="asset-local-recovery">
+       <button class="btn" disabled="" id="splashUndoBtn">
+        &curvearrowleft; Undo
+       </button>
+       <button class="btn" disabled="" id="splashRestoreBtn">
+        Restore original
+       </button>
+      </div>
+      <small class="asset-local-hint">
+       Choose an element from the list to highlight it in the Splash preview, then select Delete selected. Undo restores the previous SVG. These edits affect the shared SVG source.
+      </small>
+     </div>
+     <label class="asset-check">
+      <input id="splashIncludeBackground" type="checkbox"/>
+      <span>
+       <strong>
+        Use icon background
+       </strong>
+       <small>
+        When enabled, preview switches to the 240 &times; 240 dp icon spec and 160 dp safe circle.
+       </small>
+      </span>
+     </label>
+     <div class="asset-color-row">
+      <label class="fieldlabel" for="splashBackgroundColor">
+       Icon background color
+      </label>
+      <div>
+       <input id="splashBackgroundColor" type="color" value="#FFFFFF"/>
+       <input aria-label="Splash icon background hex" id="splashBackgroundHex" maxlength="7" type="text" value="#FFFFFF"/>
+      </div>
+     </div>
+     <label class="fieldlabel" for="splashPadding">
+      Canvas breathing room
+      <strong id="splashPaddingValue">
+       0%
+      </strong>
+     </label>
+     <input class="asset-range" id="splashPadding" max="40" min="0" type="range" value="0"/>
+     <div class="asset-range-labels">
+      <span>
+       Tighter frame
+      </span>
+      <span>
+       More room
+      </span>
+     </div>
+     <label class="fieldlabel" for="splashScale">
+      Artwork scale
+      <strong id="splashScaleValue">
+       100%
+      </strong>
+     </label>
+     <input class="asset-range" id="splashScale" max="250" min="25" type="range" value="100"/>
+     <div class="asset-range-labels">
+      <span>
+       25% smaller
+      </span>
+      <span>
+       250% &middot; can extend beyond frame
+      </span>
+     </div>
+     <div class="asset-position-controls" data-position="splash">
+      <label class="fieldlabel">
+       Move artwork
+       <span>
+        Use arrows for fine adjustments
+       </span>
+      </label>
+      <div class="asset-position-row">
+       <button aria-label="Move artwork up" class="btn asset-arrow" data-move="up" type="button">
+        &uarr;
+       </button>
+       <button aria-label="Move artwork left" class="btn asset-arrow" data-move="left" type="button">
+        &larr;
+       </button>
+       <button aria-label="Move artwork down" class="btn asset-arrow" data-move="down" type="button">
+        &darr;
+       </button>
+       <button aria-label="Move artwork right" class="btn asset-arrow" data-move="right" type="button">
+        &rarr;
+       </button>
+       <button class="btn" data-reset-position="" type="button">
+        Center
+       </button>
+      </div>
+      <div class="asset-offset-readout" id="splashOffsetReadout">
+       X 0 &middot; Y 0
+      </div>
+     </div>
+     <div class="asset-size-row">
+      <div>
+       <label class="fieldlabel">
+        Export dimensions
+       </label>
+       <div class="asset-fixed-size" id="splashExportDimensions">
+        288 &times; 288 px
+       </div>
+       <small class="asset-field-hint">
+        Base size follows Android guidelines
+       </small>
+      </div>
+      <div>
+       <label class="fieldlabel" for="splashExportFormat">
+        Format
+       </label>
+       <select class="asset-select" id="splashExportFormat">
+        <option selected="" value="svg">
+         SVG
+        </option>
+        <option value="png">
+         PNG
+        </option>
+       </select>
+      </div>
+     </div>
+     <div class="asset-png-resolution" hidden="" id="splashPngResolutionWrap">
+      <label class="fieldlabel" for="splashPngResolution">
+       PNG resolution
+      </label>
+      <select class="asset-select" id="splashPngResolution">
+       <option value="1">
+        1&times; &middot; guideline base size
+       </option>
+       <option value="2">
+        2&times; &middot; double resolution
+       </option>
+       <option value="3">
+        3&times; &middot; triple resolution
+       </option>
+       <option value="custom">
+        Custom dimensions&hellip;
+       </option>
+      </select>
+      <div hidden="" id="splashPngCustomWrap">
+       <label class="fieldlabel" for="splashPngCustomSize">
+        Custom size (px)
+       </label>
+       <input class="asset-number" id="splashPngCustomSize" max="4096" min="1" step="1" type="number" value="576"/>
+      </div>
+     </div>
+     <button class="btn primary asset-download-btn" disabled="" id="downloadSplashBtn">
+      Download splash asset
+     </button>
+    </div>
+    <div class="asset-live-preview">
+     <div class="asset-preview-title">
+      <h4>
+       Platform size preview
+      </h4>
+      <div class="asset-preview-actions">
+       <span id="splashPreviewDimensions">
+        288 &times; 288 dp
+       </span>
+       <button class="btn preview-screenshot-btn" disabled="" id="downloadSplashPreviewScreenshot" type="button">
+        Screenshot
+       </button>
+      </div>
+     </div>
+     <div class="asset-splash-device checkerboard" id="splashWindowPreview">
+      <div aria-label="Splash icon canvas. Use arrow keys to move artwork." class="asset-splash-canvas checkerboard" id="splashCanvas" role="application" tabindex="0">
+       <div class="asset-safe-circle" id="splashSafeCircle">
+       </div>
+       <img alt="Android splash icon preview" hidden="" id="splashPreviewImage"/>
+       <span class="asset-preview-empty" id="splashEmpty">
+        Your icon appears here
+       </span>
+      </div>
+     </div>
+     <div class="asset-legend">
+      <span>
+       <i class="legend-canvas">
+       </i>
+       Full icon canvas
+      </span>
+      <span>
+       <i class="legend-safe">
+       </i>
+       Safe circular area
+      </span>
+     </div>
+     <p class="asset-preview-caption">
+      The dotted circle is a visual safe-area guide; keep important artwork inside it because the outer area can be masked or cropped.
+     </p>
+    </div>
+   </div>
+   <div class="asset-guidelines">
+    <h4>
+     Android SplashScreen API reference
+    </h4>
+    <div class="asset-guideline-grid">
+     <div>
+      <strong>
+       Without icon background
+      </strong>
+      <b>
+       288 &times; 288 dp
+      </b>
+      <span>
+       Keep artwork inside a 192 dp diameter circle.
+      </span>
+     </div>
+     <div>
+      <strong>
+       With icon background
+      </strong>
+      <b>
+       240 &times; 240 dp
+      </b>
+      <span>
+       Keep artwork inside a 160 dp diameter circle.
+      </span>
+     </div>
+     <div>
+      <strong>
+       Branded image
+      </strong>
+      <b>
+       200 &times; 80 dp
+      </b>
+      <span>
+       A separate option for brand artwork, not the app icon.
+      </span>
+     </div>
+    </div>
+    <p>
+     These are Android's documented dp specifications, not a guarantee that an arbitrary SVG will be a valid Android VectorDrawable. For Android implementation, export/use a compatible vector drawable or convert and test the asset in your project.
+     <a href="https://developer.android.com/develop/ui/views/launch/splash-screen" rel="noreferrer" target="_blank">
+      Official Android splash screen guidelines &nearrow;
+     </a>
+    </p>
+   </div>
   </section>
-
-  <section id="iosAssetsPanel" class="asset-platform-panel" role="tabpanel" hidden>
-    <div class="panel asset-ios-placeholder"><div class="asset-ios-icon"><span class="material-symbols-rounded">phone_iphone</span></div><div class="eyebrow">PLATFORM WORKSPACE</div><h3>iOS asset presets are next</h3><p>This section is reserved for iOS-specific asset catalog generation. The SVG import and editing workflow will be reused, with export sizes and formats defined to match your team's requirements.</p><span class="asset-coming-soon large">Coming later</span></div>
+  <div class="asset-section-heading">
+   <div>
+    <div class="eyebrow">
+     ANDROID OUTPUT 02
+    </div>
+    <h3>
+     Brand icon
+    </h3>
+    <p>
+     Fit your logo or icon inside a square frame, adjust its background and padding, and export it for other UI use cases.
+    </p>
+   </div>
+   <span class="asset-spec-chip">
+    200 &times; 200 px fixed canvas &middot; PNG export
+   </span>
+  </div>
+  <section class="panel asset-output-card">
+   <div class="asset-brand-grid">
+    <div class="asset-settings">
+     <h4>
+      Brand icon settings
+     </h4>
+     <div class="asset-brand-source panel-subsection">
+      <div class="asset-local-editor-head">
+       <strong>
+        Artwork source
+       </strong>
+       <span id="brandSourceModeLabel">
+        Using shared Splash SVG
+       </span>
+      </div>
+      <p class="asset-field-hint">
+       By default this uses the shared SVG above. Choose a separate SVG or PNG to edit the Brand Icon independently.
+      </p>
+      <div class="asset-actions">
+       <button class="btn" id="chooseBrandSourceBtn" type="button">
+        Choose own SVG / PNG
+       </button>
+       <button class="btn" disabled="" id="useSharedBrandSourceBtn" type="button">
+        Use shared SVG
+       </button>
+      </div>
+      <input accept=".svg,.png,image/svg+xml,image/png" hidden="" id="brandSourceFileInput" type="file"/>
+     </div>
+     <div class="asset-local-editor" data-editor="brand-raster">
+      <div class="asset-local-editor-head">
+       <strong>
+        PNG editing
+       </strong>
+       <span>
+        SVG is rasterized first
+       </span>
+      </div>
+      <div class="asset-local-detect">
+       <div>
+        <b>
+         Remove background
+        </b>
+        <small>
+         Removes connected pixels similar to the canvas corners.
+        </small>
+       </div>
+       <button class="btn" disabled="" id="brandRasterDetectBtn">
+        Detect &amp; remove
+       </button>
+      </div>
+      <label class="fieldlabel" for="brandRasterTolerance">
+       Color tolerance
+       <strong id="brandRasterToleranceValue">
+        24
+       </strong>
+      </label>
+      <input class="asset-range" id="brandRasterTolerance" max="100" min="0" type="range" value="24"/>
+      <div class="asset-local-delete">
+       <label class="fieldlabel">
+        Manual removal
+       </label>
+       <small class="asset-field-hint">
+        Click a background area in the preview to remove connected pixels of a similar color.
+       </small>
+       <button class="btn danger" disabled="" id="brandRasterUndoBtn">
+        Undo raster edit
+       </button>
+       <button class="btn" disabled="" id="brandRasterRestoreBtn">
+        Restore converted PNG
+       </button>
+      </div>
+     </div>
+     <label class="asset-check">
+      <input id="brandIncludeBackground" type="checkbox"/>
+      <span>
+       <strong>
+        Include background
+       </strong>
+       <small>
+        Toggle a solid background behind the icon.
+       </small>
+      </span>
+     </label>
+     <div class="asset-color-row asset-brand-color-row">
+      <label class="fieldlabel" for="brandPaletteColor">
+       Brand background
+      </label>
+      <div>
+       <select aria-label="Choose generated brand color" class="asset-select" id="brandPaletteColor">
+        <option value="#FFFFFF">
+         Custom / white
+        </option>
+       </select>
+       <input aria-label="Custom brand background color" id="brandBackgroundColor" type="color" value="#FFFFFF"/>
+       <input aria-label="Brand icon background hex" id="brandBackgroundHex" maxlength="7" type="text" value="#FFFFFF"/>
+      </div>
+     </div>
+     <label class="fieldlabel" for="brandCornerRadius">
+      Round corners
+      <strong id="brandCornerRadiusValue">
+       0%
+      </strong>
+     </label>
+     <input class="asset-range" id="brandCornerRadius" max="50" min="0" type="range" value="0"/>
+     <div class="asset-range-labels">
+      <span>
+       Square
+      </span>
+      <span>
+       Fully rounded
+      </span>
+     </div>
+     <label class="fieldlabel" for="brandPadding">
+      Content padding
+      <strong id="brandPaddingValue">
+       12%
+      </strong>
+     </label>
+     <input class="asset-range" id="brandPadding" max="40" min="0" type="range" value="12"/>
+     <div class="asset-range-labels">
+      <span>
+       Edge-to-edge
+      </span>
+      <span>
+       More breathing room
+      </span>
+     </div>
+     <label class="fieldlabel" for="brandScale">
+      Artwork scale
+      <strong id="brandScaleValue">
+       100%
+      </strong>
+     </label>
+     <input class="asset-range" id="brandScale" max="250" min="25" type="range" value="100"/>
+     <div class="asset-position-controls" data-position="brand">
+      <label class="fieldlabel">
+       Move artwork
+       <span>
+        Use arrows for fine adjustments
+       </span>
+      </label>
+      <div class="asset-position-row">
+       <button aria-label="Move artwork up" class="btn asset-arrow" data-move="up" type="button">
+        &uarr;
+       </button>
+       <button aria-label="Move artwork left" class="btn asset-arrow" data-move="left" type="button">
+        &larr;
+       </button>
+       <button aria-label="Move artwork down" class="btn asset-arrow" data-move="down" type="button">
+        &darr;
+       </button>
+       <button aria-label="Move artwork right" class="btn asset-arrow" data-move="right" type="button">
+        &rarr;
+       </button>
+       <button class="btn" data-reset-position="" type="button">
+        Center
+       </button>
+      </div>
+      <div class="asset-offset-readout" id="brandOffsetReadout">
+       X 0 &middot; Y 0
+      </div>
+     </div>
+     <div class="asset-size-row">
+      <div>
+       <label class="fieldlabel">
+        Square canvas
+       </label>
+       <div class="asset-fixed-size">
+        200 &times; 200 px
+       </div>
+       <small class="asset-field-hint">
+        SVG uses the 200 &times; 200 viewBox
+       </small>
+      </div>
+      <div>
+       <label class="fieldlabel" for="brandExportFormat">
+        Format
+       </label>
+       <select class="asset-select" id="brandExportFormat">
+        <option selected="" value="png">
+         PNG
+        </option>
+       </select>
+      </div>
+     </div>
+     <div class="asset-png-resolution" id="brandPngResolutionWrap">
+      <label class="fieldlabel" for="brandPngResolution">
+       PNG resolution
+      </label>
+      <select class="asset-select" id="brandPngResolution">
+       <option value="1">
+        1&times; &middot; 200 &times; 200 px
+       </option>
+       <option value="2">
+        2&times; &middot; 400 &times; 400 px
+       </option>
+       <option value="3">
+        3&times; &middot; 600 &times; 600 px
+       </option>
+       <option value="4">
+        4&times; &middot; 800 &times; 800 px
+       </option>
+       <option value="custom">
+        Custom dimensions&hellip;
+       </option>
+      </select>
+      <div hidden="" id="brandPngCustomWrap">
+       <label class="fieldlabel" for="brandPngCustomSize">
+        Custom size (px)
+       </label>
+       <input class="asset-number" id="brandPngCustomSize" max="4096" min="200" step="1" type="number" value="1000"/>
+      </div>
+     </div>
+     <button class="btn primary asset-download-btn" disabled="" id="downloadBrandBtn">
+      Download brand icon
+     </button>
+     <p class="asset-footnote">
+      Brand icon edits are applied to a rasterized PNG. Background removal works on connected pixels with similar colors; inspect the preview before exporting.
+     </p>
+    </div>
+    <div class="asset-live-preview">
+     <div class="asset-preview-title">
+      <h4>
+       Brand icon preview
+      </h4>
+      <div class="asset-preview-actions">
+       <span id="brandPreviewDimensions">
+        200 &times; 200 px
+       </span>
+       <button class="btn preview-screenshot-btn" disabled="" id="downloadBrandPreviewScreenshot" type="button">
+        Screenshot
+       </button>
+      </div>
+     </div>
+     <div class="asset-brand-stage checkerboard" id="brandPreviewStage">
+      <div aria-label="Brand icon canvas. Use arrow keys to move artwork." class="asset-brand-square" id="brandSquare" role="application" tabindex="0">
+       <img alt="Brand icon preview" hidden="" id="brandPreviewImage"/>
+       <span class="asset-preview-empty" id="brandEmpty">
+        Your icon appears here
+       </span>
+      </div>
+     </div>
+     <div class="asset-preview-details">
+      <div>
+       <span>
+        Canvas
+       </span>
+       <strong id="brandCanvasInfo">
+        200 &times; 200 px
+       </strong>
+      </div>
+      <div>
+       <span>
+        Padding
+       </span>
+       <strong id="brandPaddingInfo">
+        12%
+       </strong>
+      </div>
+      <div>
+       <span>
+        Background
+       </span>
+       <strong id="brandBackgroundInfo">
+        Transparent
+       </strong>
+      </div>
+     </div>
+     <div class="asset-android-preview-card">
+      <div class="asset-preview-title">
+       <h4>
+        Android screen preview
+       </h4>
+       <div class="asset-preview-actions">
+        <span>
+         Fixed reference layout
+        </span>
+        <button class="btn preview-screenshot-btn" disabled="" id="downloadWelcomePreviewScreenshot" type="button">
+         Screenshot
+        </button>
+       </div>
+      </div>
+      <div class="asset-phone-shell onboarding-phone">
+       <div class="asset-phone-status">
+        <span>
+         2:19
+        </span>
+        <span class="asset-status-icons">
+         <i>
+         </i>
+         <i>
+         </i>
+         <i>
+         </i>
+        </span>
+       </div>
+       <div class="asset-phone-camera">
+       </div>
+       <div class="asset-phone-screen" id="brandPhoneScreen">
+        <div class="asset-phone-logo" id="brandPhoneIcon">
+         <img alt="Brand icon on Android welcome screen" hidden="" id="brandPhoneImage"/>
+        </div>
+        <div class="asset-phone-welcome-copy">
+         <div class="asset-phone-welcome-title" id="brandWelcomeTitle">
+          Welcome
+         </div>
+         <div class="asset-phone-welcome-subtitle" id="brandWelcomeSubtitle">
+          Enjoy a smoother, faster experience by booking your ride with WEBTAXI
+         </div>
+        </div>
+        <button class="asset-phone-cta" id="brandWelcomeButton" type="button">
+         Get Started
+        </button>
+        <div class="asset-phone-navigation">
+         <span class="nav-back">
+         </span>
+         <span class="nav-home">
+         </span>
+         <span class="nav-recents">
+         </span>
+        </div>
+       </div>
+      </div>
+      <div class="asset-phone-controls">
+       <label class="fieldlabel" for="brandPhoneBgSelect">
+        Screen background
+       </label>
+       <div class="asset-phone-color-controls">
+        <select aria-label="Choose a generated brand color" class="asset-select" id="brandPhoneBgSelect">
+         <option value="#F36D21">
+          Brand orange &middot; #F36D21
+         </option>
+        </select>
+        <input aria-label="Choose custom screen background color" id="brandPhoneBgCustom" type="color" value="#F36D21"/>
+        <input aria-label="Custom screen background hex value" class="asset-phone-hex" id="brandPhoneBgHex" maxlength="7" placeholder="#RRGGBB" spellcheck="false" type="text" value="#F36D21"/>
+       </div>
+       <small class="asset-field-hint">
+        Choose a palette shade or use the color picker / enter a hex value.
+       </small>
+      </div>
+     </div>
+    </div>
+   </div>
   </section>
+ </section>
+ <!-- iOS controller replaces this placeholder with ios-assets.html at startup. -->
+ <section class="asset-platform-panel" hidden="" id="iosAssetsPanel" role="tabpanel">
+  <div class="panel asset-ios-placeholder">
+   <div class="asset-ios-icon">
+    <span class="material-symbols-rounded">
+     phone_iphone
+    </span>
+   </div>
+   <div class="eyebrow">
+    PLATFORM WORKSPACE
+   </div>
+   <h3>
+    iOS asset presets are next
+   </h3>
+   <p>
+    This section is reserved for iOS-specific asset catalog generation. The SVG import and editing workflow will be reused, with export sizes and formats defined to match your team's requirements.
+   </p>
+   <span class="asset-coming-soon large">
+    Coming later
+   </span>
+  </div>
+ </section>
 </div>
+
