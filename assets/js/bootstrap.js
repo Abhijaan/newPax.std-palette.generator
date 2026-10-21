@@ -54,7 +54,7 @@ function initializeApplicationTabs() {
 
 const mobileHomeLoaded = await loadComponent(
   '[data-component="mobile-home"]',
-  'components/mobile-home/home-screen.html'
+  'components/mobile-home/home-screen.html?v=theme-toggle-state-v3'
 );
 const imageAssetsLoaded = await loadComponent(
   '[data-component="image-assets"]',

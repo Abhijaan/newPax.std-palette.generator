@@ -29,8 +29,17 @@ test('Android XML export contains every shade in a resources element', () => {
   assert.match(xml, /<\/resources>/);
 });
 
-test('Kotlin and Swift exports contain the seed shade', () => {
-  assert.match(kotlinExport(palette), /val shade600 = Color\(0xFF6750A4\)/);
+test('Jetpack Compose export uses the fixed BrandColorPalette constructor template', () => {
+  const kotlin = kotlinExport(palette);
+
+  assert.match(kotlin, /^private val BRAND_COLOR_PALETTE = BrandColorPalette\(/);
+  assert.match(kotlin, /brandPrimary100 = Color\(0xFF[0-9A-F]{6}\)/);
+  assert.match(kotlin, /brandPrimary600 = Color\(0xFF6750A4\), \/\/ Core brand colour/);
+  assert.match(kotlin, /brandPrimary1000 = Color\(0xFF[0-9A-F]{6}\)\n\)\n?$/);
+  assert.doesNotMatch(kotlin, /object BrandPrimary|shade600/);
+});
+
+test('Swift export contains the seed shade', () => {
   assert.match(swiftExport(palette), /static let shade600 = Color\(/);
 });
 

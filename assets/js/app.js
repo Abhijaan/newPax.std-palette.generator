@@ -17,6 +17,8 @@ import { downloadElementScreenshot } from './preview-screenshots.js';
 
 const $ = id => document.getElementById(id);
 const DEFAULT_SEED = '#6750A4';
+// Keep the low-saturation curve threshold internal instead of exposing algorithm tuning in the UI.
+const LOW_SATURATION_THRESHOLD = 20;
 const TOAST_DURATION_MS = 1700;
 const DOWNLOAD_URL_REVOKE_DELAY_MS = 1000;
 
@@ -43,34 +45,43 @@ function renderPalette() {
 
   const paletteContainer = $('palette');
   paletteContainer.replaceChildren();
+  const paletteIsLightMode = $('phonePreview').dataset.mode !== 'dark';
+  // Kotlin ExtraBrandColors uses bd600 as primary in light mode and bd600
+  // maps to BrandPrimary500 in dark mode. Highlight the source shade accordingly.
+  const primaryShade = paletteIsLightMode ? '600' : '500';
 
   currentPalette.colors.forEach(({ name, hex }) => {
     const shade = name.replace('BrandPrimary', '');
+    const displayName = `Primary ${shade}`;
     const card = document.createElement('div');
-    card.className = 'swatch';
-    card.title = `Copy ${hex}`;
+    card.className = `swatch${shade === primaryShade ? ' primary-shade' : ''}`;
+    card.title = shade === primaryShade
+      ? `Primary color for ${paletteIsLightMode ? 'light' : 'dark'} mode — copy ${hex}`
+      : `Copy ${hex}`;
+    card.tabIndex = 0;
+    card.setAttribute('role', 'button');
+    card.setAttribute('aria-label', shade === primaryShade
+      ? `${displayName}, primary color for ${paletteIsLightMode ? 'light' : 'dark'} mode, ${hex}; activate to copy`
+      : `Copy ${displayName}, ${hex}`);
     card.addEventListener('click', () => copyText(hex));
-
-    const color = document.createElement('div');
-    color.className = 'swatchcolor';
-    color.style.background = hex;
-    color.title = `Copy ${hex}`;
-    color.tabIndex = 0;
-    color.setAttribute('role', 'button');
-    color.setAttribute('aria-label', `Copy ${name} ${hex}`);
-    color.addEventListener('click', () => copyText(hex));
-    color.addEventListener('keydown', event => {
+    card.addEventListener('keydown', event => {
       if (event.key !== 'Enter' && event.key !== ' ') return;
       event.preventDefault();
       copyText(hex);
     });
+
+    // The color circle is decorative; the parent swatch owns click and keyboard behavior.
+    const color = document.createElement('div');
+    color.className = 'swatchcolor';
+    color.style.background = hex;
+    color.setAttribute('aria-hidden', 'true');
 
     const metadata = document.createElement('div');
     metadata.className = 'swatchmeta';
 
     const nameElement = document.createElement('div');
     nameElement.className = 'swatchname';
-    nameElement.textContent = name;
+    nameElement.textContent = displayName;
 
     const hexElement = document.createElement('div');
     hexElement.className = 'swatchhex';
@@ -83,11 +94,12 @@ function renderPalette() {
 
     metadata.append(nameElement, hexElement, hsbElement);
 
-    if (shade === '600') {
-      const seedTag = document.createElement('div');
-      seedTag.className = 'seedtag';
-      seedTag.textContent = currentPalette.mode === 'fallback' ? 'Default 600' : 'SEED';
-      metadata.append(seedTag);
+    // The primary shade changes with preview mode: 600 in light, 500 in dark.
+    if (shade === primaryShade) {
+      const primaryTag = document.createElement('div');
+      primaryTag.className = 'primary-role-tag';
+      primaryTag.textContent = `PRIMARY · ${paletteIsLightMode ? 'LIGHT' : 'DARK'}`;
+      metadata.append(primaryTag);
     }
 
     card.append(color, metadata);
@@ -98,7 +110,6 @@ function renderPalette() {
     color.name === `BrandPrimary${shade}`
   ).hex;
 
-  const primary = getShade(600);
   const lightBackground = getShade(100);
   const lightOutline = getShade(200);
   const promoEnd = getShade(800);
@@ -106,9 +117,38 @@ function renderPalette() {
   const darkBackground = getShade(1000);
   const phone = $('phonePreview');
   const isLightMode = phone.dataset.mode !== 'dark';
-  const onPrimary = normalizeHex($(isLightMode ? 'onPrimaryLightHex' : 'onPrimaryDarkHex').value);
+  // Match the Kotlin ExtraBrandColors mapping exactly.
+  // Light mode maps bdN directly to BrandPrimaryN.
+  // Dark mode reverses the generated scale: bd100=1000 ... bd1000=100.
+  // Do not tint or otherwise transform the generated colors.
+  const baseBrandShades = Object.fromEntries(
+    currentPalette.colors.map(({ name, hex }) => [name.replace('BrandPrimary', ''), hex])
+  );
+  const darkBrandShades = Object.fromEntries(
+    Object.entries(baseBrandShades).map(([shade, hex]) => [String(1100 - Number(shade)), hex])
+  );
+  const extraBrandColors = isLightMode ? baseBrandShades : darkBrandShades;
+  const bd300 = extraBrandColors['300'];
+  const bd600 = extraBrandColors['600'];
+  const onPrimaryHexId = isLightMode ? 'onPrimaryLightHex' : 'onPrimaryDarkHex';
+  const onPrimaryPickerId = isLightMode ? 'onPrimaryLightPicker' : 'onPrimaryDarkPicker';
+  let onPrimary;
 
-  phone.style.setProperty('--mock-primary', primary);
+  // A partially typed HEX value is normal during editing; keep the last valid picker value until it is complete.
+  try {
+    onPrimary = normalizeHex($(onPrimaryHexId).value);
+  } catch {
+    onPrimary = $(onPrimaryPickerId).value.toUpperCase();
+  }
+
+  phone.style.setProperty('--extra-brand-bd600', bd600);
+  phone.style.setProperty('--extra-brand-bd300', bd300);
+  // Backward-compatible aliases for existing preview styles.
+  phone.style.setProperty('--mock-primary', bd600);
+  phone.style.setProperty('--mock-banner-bg', extraBrandColors['900']);
+  // Match the Android banner's LocalExtraTextColors tokens exactly.
+  phone.style.setProperty('--banner-text100', isLightMode ? '#FFFFFF' : '#111111');
+  phone.style.setProperty('--banner-text200', isLightMode ? '#E6E6E6' : '#333333');
   phone.style.setProperty('--on-primary', onPrimary);
   phone.style.setProperty('--promo-end', promoEnd);
 
@@ -164,7 +204,7 @@ function generateFromInput() {
     $('seedPicker').value = seed;
     $('seedHex').removeAttribute('aria-invalid');
 
-    currentPalette = generate(seed, Number($('threshold').value));
+    currentPalette = generate(seed, LOW_SATURATION_THRESHOLD);
     renderPalette();
   } catch (error) {
     $('seedHex').setAttribute('aria-invalid', 'true');
@@ -176,7 +216,7 @@ function generateFromInput() {
 async function copyText(text) {
   try {
     await navigator.clipboard.writeText(text);
-    toast(`Copied ${text}`);
+    toast(`Copied ${text} to clipboard`);
   } catch {
     const textarea = document.createElement('textarea');
     textarea.value = text;
@@ -188,7 +228,7 @@ async function copyText(text) {
 
     const copied = document.execCommand('copy');
     textarea.remove();
-    toast(copied ? `Copied ${text}` : 'Clipboard access is unavailable in this browser.');
+    toast(copied ? `Copied ${text} to clipboard` : 'Clipboard access is unavailable in this browser.');
   }
 }
 
@@ -222,38 +262,62 @@ function downloadIosAssets() {
   toast('Downloading 10 Asset Catalog JSON files. Place each JSON in its matching .colorset folder.');
 }
 
-/** Route each export button to the matching pure serializer. */
-document.querySelectorAll('[data-export]').forEach(button => {
-  button.addEventListener('click', () => {
-    if (!currentPalette) return;
+/** Human-readable descriptions of the exact files produced by each export option. */
+const EXPORT_FORMAT_HELP = {
+  json: 'One .json file containing palette metadata, HSB values, fallback information and all shade HEX values.',
+  xml: 'One Android colors.xml resource file containing all ten BrandPrimary color resources.',
+  kotlin: 'One .kt file containing a Kotlin object with Jetpack Compose Color declarations.',
+  ios: 'Ten Xcode Asset Catalog Contents.json files, one for each shade. Place each file inside its matching .colorset folder.',
+  swift: 'One .swift file containing SwiftUI Color declarations for all ten shades.'
+};
 
-    switch (button.dataset.export) {
-      case 'json':
-        downloadTextFile(
-          'brand-primary-palette.json',
-          `${JSON.stringify(paletteObject(currentPalette, $('seedHex').value), null, 2)}\n`,
-          'application/json'
-        );
-        break;
-      case 'xml':
-        downloadTextFile('colors.xml', xmlExport(currentPalette), 'application/xml');
-        break;
-      case 'kotlin':
-        downloadTextFile('BrandPrimary.kt', kotlinExport(currentPalette));
-        break;
-      case 'swift':
-        downloadTextFile('BrandPrimary.swift', swiftExport(currentPalette));
-        break;
-      case 'ios':
-        downloadIosAssets();
-        break;
-      default:
-        console.warn(`Unsupported palette export: ${button.dataset.export}`);
-    }
-  });
-});
+/** Keep the export description synchronized with the selected output format. */
+function updateExportFormatHelp() {
+  const format = $('exportFormat').value;
+  $('exportFormatHelp').textContent = EXPORT_FORMAT_HELP[format] || 'Choose an export format to see which files will be generated.';
+}
 
-/** Keep a color picker and its hexadecimal input synchronized. */
+/** Export the current palette using the format selected in the output section. */
+function exportSelectedFormat() {
+  if (!currentPalette) {
+    toast('Generate a palette before exporting.');
+    return;
+  }
+
+  switch ($('exportFormat').value) {
+    case 'json':
+      downloadTextFile(
+        'brand-primary-palette.json',
+        `${JSON.stringify(paletteObject(currentPalette, $('seedHex').value), null, 2)}\n`,
+        'application/json'
+      );
+      toast('Exported palette as JSON.');
+      break;
+    case 'xml':
+      downloadTextFile('colors.xml', xmlExport(currentPalette), 'application/xml');
+      toast('Exported Android colors.xml.');
+      break;
+    case 'kotlin':
+      downloadTextFile('BrandColorPalette.kt', kotlinExport(currentPalette));
+      toast('Exported Kotlin / Compose colors.');
+      break;
+    case 'swift':
+      downloadTextFile('BrandPrimary.swift', swiftExport(currentPalette));
+      toast('Exported Swift colors.');
+      break;
+    case 'ios':
+      downloadIosAssets();
+      break;
+    default:
+      toast('Choose a supported export format.');
+      console.warn(`Unsupported palette export: ${$('exportFormat').value}`);
+  }
+}
+
+$('exportFormat').addEventListener('change', updateExportFormatHelp);
+$('exportBtn').addEventListener('click', exportSelectedFormat);
+
+/** Keep a color picker and HEX field synchronized, updating the preview as soon as HEX is valid. */
 function bindColorPair(pickerId, hexId) {
   const picker = $(pickerId);
   const input = $(hexId);
@@ -262,6 +326,19 @@ function bindColorPair(pickerId, hexId) {
     input.value = picker.value.toUpperCase();
     input.removeAttribute('aria-invalid');
     renderPalette();
+  });
+
+  // Update on every keystroke once the user has entered a complete valid HEX value.
+  input.addEventListener('input', () => {
+    try {
+      const value = normalizeHex(input.value);
+      input.value = value;
+      picker.value = value;
+      input.removeAttribute('aria-invalid');
+      renderPalette();
+    } catch {
+      // Partial values are expected while typing; validate only when editing is committed.
+    }
   });
 
   input.addEventListener('change', () => {
@@ -284,15 +361,19 @@ function bindColorPair(pickerId, hexId) {
 bindColorPair('onPrimaryLightPicker', 'onPrimaryLightHex');
 bindColorPair('onPrimaryDarkPicker', 'onPrimaryDarkHex');
 
-$('lightModeBtn').addEventListener('click', () => {
-  $('phonePreview').dataset.mode = 'light';
+function selectPreviewMode(mode) {
+  const isLight = mode === 'light';
+  $('phonePreview').dataset.mode = mode;
+  // Update selection synchronously; renderPalette also reapplies the same state.
+  $('lightModeBtn').classList.toggle('active', isLight);
+  $('darkModeBtn').classList.toggle('active', !isLight);
+  $('lightModeBtn').setAttribute('aria-pressed', String(isLight));
+  $('darkModeBtn').setAttribute('aria-pressed', String(!isLight));
   renderPalette();
-});
+}
 
-$('darkModeBtn').addEventListener('click', () => {
-  $('phonePreview').dataset.mode = 'dark';
-  renderPalette();
-});
+$('lightModeBtn').addEventListener('click', () => selectPreviewMode('light'));
+$('darkModeBtn').addEventListener('click', () => selectPreviewMode('dark'));
 
 document.querySelectorAll('.screen-toggle [data-screen]').forEach(button => {
   button.addEventListener('click', () => {
@@ -316,23 +397,21 @@ $('seedHex').addEventListener('keydown', event => {
   if (event.key === 'Enter') generateFromInput();
 });
 $('seedHex').addEventListener('input', () => $('seedHex').removeAttribute('aria-invalid'));
-$('threshold').addEventListener('change', generateFromInput);
 
 $('resetBtn').addEventListener('click', () => {
   $('seedHex').value = DEFAULT_SEED;
   $('seedPicker').value = DEFAULT_SEED;
-  $('threshold').value = '20';
   generateFromInput();
 });
 
 $('copyAllBtn').addEventListener('click', () => {
   if (!currentPalette) return;
-  copyText(currentPalette.colors.map(color => `${color.name}: ${color.hex}`).join('\n'));
+  copyText(currentPalette.colors.map(color => `Primary ${color.name.replace('BrandPrimary', '')}: ${color.hex}`).join('\n'));
 });
 
 $('downloadHomePreviewScreenshot')?.addEventListener('click', async () => {
   try {
-    const result = await downloadElementScreenshot($('phonePreview'), 'blueline-home-preview.png');
+    const result = await downloadElementScreenshot($('phonePreview'), 'brand-home-preview.png');
     toast(result?.clipboardCopied
       ? 'Home preview downloaded and copied to clipboard'
       : 'Home preview downloaded; clipboard copy is unavailable in this browser');
@@ -341,5 +420,6 @@ $('downloadHomePreviewScreenshot')?.addEventListener('click', async () => {
   }
 });
 
-// Initialize the page with the documented default seed.
+// Initialize the page with the documented default main brand color and export guidance.
+updateExportFormatHelp();
 generateFromInput();

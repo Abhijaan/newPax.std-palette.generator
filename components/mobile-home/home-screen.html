@@ -1,12 +1,9 @@
 <!-- Blueline Taxis Home mobile preview component. Loaded by assets/js/bootstrap.js. -->
 <div class="phone-heading">
- <div>
-  <h2 class="phone-heading-title">
-   Mobile UI preview
-  </h2>
-  <p class="phone-heading-description">
-   Blueline Taxis &middot; Mobile screen preview
-  </p>
+ <div class="phone-heading-copy">
+  <div class="eyebrow">LIVE PREVIEW</div>
+  <h2 class="phone-heading-title">Preview your palette</h2>
+  <p class="phone-heading-description">See how your brand colors look in a mobile app across light and dark themes.</p>
   <button class="btn preview-screenshot-btn" id="downloadHomePreviewScreenshot" type="button">
    Download preview screenshot
   </button>
@@ -40,95 +37,40 @@
   </button>
  </div>
 </div>
-<div class="phone" data-mode="light" data-screen="home" id="phonePreview">
- <div class="mock-map">
-  <div class="map-grid">
+<div class="phone home-preview-phone" data-mode="light" data-screen="home" id="phonePreview" aria-label="Taxi booking app home screen preview">
+ <div class="mock-map" aria-label="Map preview">
+  <div class="map-grid"></div>
+  <div class="map-water"></div>
+  <div class="map-route"></div>
+  <div class="phone-status" aria-hidden="true">
+   <span>7:34</span><span class="status-system-icons">▮ ▮ ◉ ▰</span>
   </div>
-  <div class="map-water">
-  </div>
-  <div class="map-route">
-  </div>
-  <div class="phone-status">
-   <span>
-    4:03 ◈
-   </span>
-   <span>
-    ● ▰ &utrif;
-   </span>
-  </div>
-  <div class="mock-menu">
-   <span class="material-symbols-rounded">
-    menu
-   </span>
-  </div>
-  <div class="mock-top-pill">
-   <span class="material-symbols-rounded">
-    local_fire_department
-   </span>
-   100
-  </div>
-  <div class="map-pin">
-   <small>
-    3 MIN
-   </small>
-   Pickup
-  </div>
+  <div class="mock-camera-cutout" aria-hidden="true"></div>
+  <button class="mock-menu" type="button" aria-label="Menu"><span class="material-symbols-rounded">menu</span></button>
+  <div class="mock-top-pill"><span class="material-symbols-rounded">local_fire_department</span><span>100</span></div>
+  <div class="mock-avatar" aria-label="User profile">J</div>
+  <div class="map-pin"><span class="map-pin-time">3<small>MIN</small></span><span class="map-pin-label">Pickup</span></div>
+  <button class="mock-location" type="button" aria-label="Current location"><span class="material-symbols-rounded">my_location</span></button>
  </div>
- <div class="mock-sheet">
-  <div class="mock-search">
-   <span class="material-symbols-rounded">
-    search
-   </span>
-   <span>
-    Where to?
-   </span>
-   <span class="schedule">
-    <span class="material-symbols-rounded">
-     calendar_month
-    </span>
-    Schedule
-   </span>
+ <section class="mock-sheet" aria-label="Booking details">
+  <div class="driver-status-card">
+   <span class="driver-status-indicator" aria-hidden="true"></span>
+   <div class="driver-status-copy"><strong>Finding Driver...</strong><span>Please wait while we find a driver</span></div>
   </div>
-  <div class="mock-label">
-   Quick Booking Stops
-  </div>
-  <div class="quick-row">
-   <div class="quick-item">
-    <div class="quick-circle alt">
-     <span class="material-symbols-rounded">
-      flight
-     </span>
-    </div>
-    Airport
+  <div class="mock-sheet-content">
+   <button class="booking-cta" type="button"><span class="material-symbols-rounded">calendar_month</span><span>Schedule Another Booking</span><span class="material-symbols-rounded booking-arrow">arrow_forward</span></button>
+   <div class="mock-label">Quick Bookings</div>
+   <div class="quick-row">
+    <div class="quick-item"><div class="quick-circle alt"><span class="material-symbols-rounded">work</span></div><span>Work</span></div>
+    <div class="quick-item"><div class="quick-circle neutral"><span class="material-symbols-rounded">add</span></div><span>Add</span></div>
    </div>
-   <div class="quick-item">
-    <div class="quick-circle">
-     <span class="material-symbols-rounded">
-      home
-     </span>
-    </div>
-    Home
-   </div>
-   <div class="quick-item">
-    <div class="quick-circle neutral">
-     <span class="material-symbols-rounded">
-      add
-     </span>
-    </div>
-    Add
+   <div class="mock-label promotions-label">Promotions</div>
+   <div class="promo-row" aria-label="Promotions">
+    <article class="promo promo-corporate"><span class="promo-brand">ride</span><span class="promo-copy">Corporate Travel</span><span class="promo-caption">Business travel, with all its careful scheduling.</span></article>
+    <article class="promo promo-airport"><span class="promo-copy">Airport Pick-Up &amp; Drop-Off</span></article>
    </div>
   </div>
-  <div class="mock-label">
-   Promotions
-  </div>
-  <div class="promo-row">
-   <div class="promo">
-    CARLISLE TAXIS
-   </div>
-   <div class="promo alt">
-    GREY STREET HOTEL
-   </div>
-  </div>
- </div>
+  <div class="mock-nav" aria-hidden="true"><span class="nav-back"></span><span class="nav-home"></span><span class="nav-recents"></span></div>
+ </section>
 </div>
 

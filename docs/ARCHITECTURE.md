@@ -31,7 +31,7 @@ The ordering is intentional: feature controllers expect their HTML IDs to exist 
 
 ## Palette data flow
 
-`app.js` validates the user-entered seed with `normalizeHex`, passes the seed and fallback threshold to `generate`, and renders the returned `{ colors, mode, hsb, reason }` value. Export actions pass that same value into pure serializer functions in `palette-exporters.js`.
+`app.js` validates the user-entered seed with `normalizeHex`, passes the seed and the internal low-saturation threshold to `generate`, and renders the returned `{ colors, mode, hsb, reason }` value. The threshold is intentionally not exposed as a UI control. Export actions pass the same palette result into pure serializer functions in `palette-exporters.js`.
 
 `palette-engine.js` is designed to be testable in Node without a DOM. Keep it deterministic: the same seed and threshold should produce the same result.
 
@@ -54,3 +54,11 @@ The ordering is intentional: feature controllers expect their HTML IDs to exist 
 ## Quality checks
 
 Run `npm run check` before opening a pull request. It syntax-checks JavaScript files and runs the Node test suite for palette math and export serialization. Manually test browser-only workflows such as SVG import, preview updates, PNG downloads, clipboard permissions, undo/restore, and responsive layouts.
+
+## Editing visible labels
+
+- Palette headings, field labels, export options, and footer text are in `index.html`.
+- Mobile preview headings and mock-screen labels are in `components/mobile-home/home-screen.html`.
+- Image Asset Studio copy is in `components/image-assets/image-assets.html`; iOS-specific copy is in `components/image-assets/ios-assets.html`.
+- Styling belongs in the stylesheet closest to the component.
+- Toast and validation wording belongs in the controller that performs the action.

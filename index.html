@@ -16,10 +16,10 @@
     >
 
     <!-- Global shell styles load before feature-specific styles. -->
-    <link rel="stylesheet" href="assets/css/styles.css?v=dark-red-theme-1">
-    <link rel="stylesheet" href="components/mobile-home/home-screen.css?v=dark-red-theme-1">
-    <link rel="stylesheet" href="components/image-assets/image-assets.css?v=dark-red-theme-1">
-    <link rel="stylesheet" href="components/image-assets/ios-assets.css?v=dark-red-theme-1">
+    <link rel="stylesheet" href="assets/css/styles.css?v=brand-home-preview-v1">
+    <link rel="stylesheet" href="components/mobile-home/home-screen.css?v=theme-toggle-state-v3">
+    <link rel="stylesheet" href="components/image-assets/image-assets.css?v=brand-home-preview-v1">
+    <link rel="stylesheet" href="components/image-assets/ios-assets.css?v=brand-home-preview-v1">
   </head>
   <body>
     <main>
@@ -28,7 +28,7 @@
           <div class="logo" aria-hidden="true">◉</div>
           <div>
             <div class="eyebrow">Internal mobile design tool</div>
-            <h1>Color Palette Studio</h1>
+            <h1>New Pax App Studio</h1>
           </div>
         </div>
         <div class="pill">MVP · Algorithm v0.2</div>
@@ -61,77 +61,90 @@
         role="tabpanel"
         aria-labelledby="paletteTabButton"
       >
-        <div class="grid">
-          <section class="panel">
-            <h2>Generate a palette</h2>
-            <p>Enter a seed color. The seed becomes BrandPrimary600.</p>
+        <div class="grid palette-workspace">
+          <div class="palette-controls-column">
+            <!-- Input group: all settings that influence palette generation or preview colors. -->
+            <section class="panel palette-input-panel" aria-labelledby="paletteInputHeading">
+              <div class="palette-section-heading">
+                <div class="eyebrow">PALETTE SETUP</div>
+                <h2 id="paletteInputHeading">Generate a palette</h2>
+                <p>Choose the main brand color. It anchors the generated color scale.</p>
+              </div>
 
-            <label class="fieldlabel" for="seedHex">Seed color · HEX</label>
-            <div class="seedrow">
-              <input id="seedPicker" type="color" value="#20294F" aria-label="Choose seed color">
-              <input
-                id="seedHex"
-                type="text"
-                value="#20294F"
-                spellcheck="false"
-                autocomplete="off"
-                aria-label="Seed hex value"
-              >
-            </div>
-            <div class="help">Accepts six-digit RGB hex, with or without #.</div>
+              <label class="fieldlabel" for="seedHex">Main brand color · HEX</label>
+              <div class="seedrow">
+                <input id="seedPicker" type="color" value="#20294F" aria-label="Choose main brand color">
+                <input
+                  id="seedHex"
+                  type="text"
+                  value="#20294F"
+                  spellcheck="false"
+                  autocomplete="off"
+                  aria-label="Main brand color HEX value"
+                >
+              </div>
+              <div class="help">Accepts six-digit RGB hex, with or without #.</div>
 
-            <div class="btnrow">
-              <button class="btn primary" id="generateBtn">Generate palette</button>
-              <button class="btn" id="resetBtn">Reset</button>
-              <button class="btn" id="copyAllBtn">Copy all</button>
-            </div>
-            <div class="status" id="status" aria-live="polite"></div>
+              <div class="btnrow">
+                <button class="btn primary" id="generateBtn" type="button">Generate palette</button>
+                <button class="btn" id="resetBtn" type="button">Reset</button>
+              </div>
 
-            <label class="fieldlabel" for="threshold">Low-saturation fallback threshold</label>
-            <select id="threshold" class="field-select">
-              <option value="15">Below 15%</option>
-              <option value="20" selected>Below 20%</option>
-            </select>
-            <div class="help">Seeds below the configured low-brightness threshold use the exact default palette.</div>
-
-            <div class="subhead">Color on primary</div>
-            <p>Text and icons placed directly on the seed-colored button.</p>
-            <div class="fieldgrid">
-              <div>
-                <label class="fieldlabel" for="onPrimaryLightHex">Light theme</label>
-                <div class="coloron-row">
-                  <input id="onPrimaryLightPicker" type="color" value="#FFFFFF" aria-label="Light color on primary">
-                  <input id="onPrimaryLightHex" type="text" value="#FFFFFF" aria-label="Light color on primary hex">
+              <div class="color-on-primary-section">
+                <div class="subhead">Color on primary</div>
+                <p class="section-description">Text and icons placed directly on the primary color.</p>
+                <div class="fieldgrid">
+                  <div>
+                    <label class="fieldlabel" for="onPrimaryLightHex">Light theme</label>
+                    <div class="coloron-row">
+                      <input id="onPrimaryLightPicker" type="color" value="#FFFFFF" aria-label="Light color on primary">
+                      <input id="onPrimaryLightHex" type="text" value="#FFFFFF" aria-label="Light color on primary hex" autocomplete="off" spellcheck="false">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="fieldlabel" for="onPrimaryDarkHex">Dark theme</label>
+                    <div class="coloron-row">
+                      <input id="onPrimaryDarkPicker" type="color" value="#FFFFFF" aria-label="Dark color on primary">
+                      <input id="onPrimaryDarkHex" type="text" value="#FFFFFF" aria-label="Dark color on primary hex" autocomplete="off" spellcheck="false">
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div>
-                <label class="fieldlabel" for="onPrimaryDarkHex">Dark theme</label>
-                <div class="coloron-row">
-                  <input id="onPrimaryDarkPicker" type="color" value="#FFFFFF" aria-label="Dark color on primary">
-                  <input id="onPrimaryDarkHex" type="text" value="#FFFFFF" aria-label="Dark color on primary hex">
+            </section>
+
+            <!-- Output group: generated shades and export actions are kept together. -->
+            <section class="panel palette-output-panel" aria-labelledby="paletteOutputHeading">
+              <div class="palette-section-heading">
+                <div class="eyebrow">PALETTE OUTPUT</div>
+                <h2 id="paletteOutputHeading">Generated shades</h2>
+                <p>Select a shade to copy its HEX value, or use Copy all to copy every shade.</p>
+              </div>
+
+              <div class="palette" id="palette"></div>
+              <div class="palette-output-actions">
+                <button class="btn" id="copyAllBtn" type="button">Copy all colors</button>
+              </div>
+
+              <div class="left-exports">
+                <h2>Export for your app</h2>
+                <div class="export-controls">
+                  <label class="fieldlabel" for="exportFormat">Export format</label>
+                  <div class="export-select-row">
+                    <select id="exportFormat" class="field-select" aria-describedby="exportFormatHelp">
+                      <option value="json">Palette data · JSON (.json)</option>
+                      <option value="xml">Android resources · XML (colors.xml)</option>
+                      <option value="kotlin">Jetpack Compose · Kotlin (.kt)</option>
+                      <option value="ios">iOS Asset Catalog · 10 Contents.json files</option>
+                      <option value="swift">SwiftUI colors · Swift (.swift)</option>
+                    </select>
+                    <button class="btn primary" id="exportBtn" type="button">Export</button>
+                  </div>
+                  <p class="export-format-help" id="exportFormatHelp" aria-live="polite">Exports palette metadata and shade values to one JSON file.</p>
                 </div>
+                <div class="note">Exports are generated locally in your browser. No color values are sent to a server.</div>
               </div>
-            </div>
-
-            <div class="palette-title">
-              <h2>Generated shades</h2>
-              <span class="help">Tap a row to copy HEX</span>
-            </div>
-            <div class="palette" id="palette"></div>
-
-            <!-- Export buttons dispatch to pure serializers in palette-exporters.js. -->
-            <div class="left-exports">
-              <h2>Export for your app</h2>
-              <div class="exports">
-                <button class="btn" data-export="json">JSON</button>
-                <button class="btn" data-export="xml">Android XML</button>
-                <button class="btn" data-export="kotlin">Kotlin / Compose</button>
-                <button class="btn" data-export="ios">iOS Asset Catalog JSONs</button>
-                <button class="btn" data-export="swift">Swift colors</button>
-              </div>
-              <div class="note">Exports are generated locally in your browser. No seed colors are sent to a server.</div>
-            </div>
-          </section>
+            </section>
+          </div>
 
           <section class="phone-wrap" aria-label="Mobile application preview">
             <div data-component="mobile-home"></div>

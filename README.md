@@ -67,8 +67,8 @@ Read [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) and [`CONTRIBUTING.md`](CONT
 
 - Generates `BrandPrimary100` through `BrandPrimary1000`, with the seed fixed at `BrandPrimary600`.
 - Reports HSB values and uses the approved fallback palette for seeds below the configured brightness threshold.
-- Previews light/dark mobile UI colors and lets developers configure `colorOnPrimary` values.
-- Exports JSON, Android XML, Kotlin/Compose, Swift, and individual Xcode color asset JSON payloads.
+- Previews light/dark mobile UI colors and updates the preview as valid `colorOnPrimary` HEX values are entered.
+- Exports JSON, Android XML, Kotlin/Compose, Swift, and individual Xcode color asset JSON payloads through one format selector.
 
 ### Android Image Asset Studio
 
@@ -81,6 +81,19 @@ Read [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) and [`CONTRIBUTING.md`](CONT
 - Square icon export list with per-size SVG/PNG downloads.
 - App icon canvas with configurable dimensions, background, padding, artwork scale, corner radius, positioning, and SVG cleanup actions.
 - Dynamic Island export with a fixed 18 px height and configurable width, padding, scale, and background.
+
+## Where to change visible text
+
+Most visible headings and descriptions are plain text in HTML, so you do not need to edit JavaScript to rename them:
+
+- Palette setup, generated shades, export labels, and the application footer: `index.html`.
+- Mobile preview heading, description, and preview-screen labels: `components/mobile-home/home-screen.html`.
+- Image Asset Studio heading and Android labels: `components/image-assets/image-assets.html`.
+- iOS-specific labels: `components/image-assets/ios-assets.html`.
+- Spacing, typography, text colors, cards, and layout: the matching CSS file (`assets/css/styles.css` for the palette page, `components/mobile-home/home-screen.css` for the phone preview, and the corresponding `components/image-assets/*.css` file for asset tools).
+- Toast wording, validation messages, and copy/export feedback: `assets/js/app.js` for palette actions, or the relevant asset controller for image actions.
+
+Keep behavior changes in JavaScript and appearance changes in CSS; avoid editing the embedded map image data in `styles.css`.
 
 ## Quality checks
 
